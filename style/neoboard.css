@@ -1,0 +1,39 @@
+.gridster
+{
+	color:#ffffff;
+}
+.widget
+{
+padding-left:10px;
+padding-top:5px
+}
+
+.thinwidg
+{
+padding-left:10px;
+}
+body{
+	background-color:#222222;
+	color:#aaaaaa;
+}
+
+text
+{
+color:#aaaaaa
+}
+
+.green {
+	background-color:#00CC00;
+}
+.blue {
+	background-color:#0066FF;
+}
+.red {
+	background-color:#FF0000;
+}
+.orange {
+	background-color:#669999;
+}
+.purple {
+	background-color:#FF66CC;
+}

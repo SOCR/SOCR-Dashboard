@@ -1,0 +1,183 @@
+
+/* custom template */
+html, body {
+   height: 100%;
+   font-family:'Ruda',arial,sans-serif;
+}
+
+a {
+  color:#222222;
+}
+
+#cover {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+svg {
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  display: block;
+}
+
+.text-right {
+  float:right;
+  font-style: italic;
+  font-weight: 200;
+  text-transform: lowercase;
+  letter-spacing: 0px;
+}
+
+.wrapper, .row {
+   height: 100%;
+   margin-left:0;
+   margin-right:0;
+}
+
+.wrapper:before, .wrapper:after,
+.column:before, .column:after {
+    content: "";
+    display: table;
+}
+
+.wrapper:after,
+.column:after {
+    clear: both;
+}
+
+.column {
+    height: 100%;
+    overflow: auto;
+    *zoom:1;
+}
+
+.column .padding {
+    padding: 20px;
+    padding-top: 0px !important;
+}
+
+.box {
+  	bottom: 0; /* increase for footer use */
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+.divider {
+	margin-top:8px;
+}
+
+#main {
+    background-color:#fefefe;
+}
+#main .img-circle {
+  margin-top:18px;
+  height:70px;
+  width:70px;
+}
+
+#sidebar, #sidebar a {
+    color:#ffffff;
+    background-color:transparent;
+	text-shadow:1px 0 1px #888888;
+}
+#sidebar a.logo {
+  display:block;
+  padding:0px;
+  background-color:none;
+  color:#B3DDF2;
+  min-height:40px;
+  width:175px;
+  margin:12px;
+  font-size:32px;
+  font-weight:700;
+  text-align:left;
+  text-decoration:none;
+  text-shadow: 1.5px 1.5px rgba(0,0,0,.75);
+  line-height: 32px;
+}
+
+#sidebar strong {
+  color:#fff;
+}
+
+#sidebar p {
+  padding: 3px;
+  margin-left: 12px;
+}
+
+#sidebar-footer {
+  position:absolute;bottom:5px;
+  font-size: 10px;
+}
+#footer {
+  margin-bottom:0px;
+}
+
+/* center and adjust the sidebar contents on smaller devices */
+@media (max-width: 768px) {
+  #sidebar,#sidebar a.logo {
+    text-align:center;
+    margin:0 auto;
+    margin-top:30px;
+    font-size:26px;
+  }
+  #sidebar a.logo {
+    font-size:50px;
+    height:75px;
+    width:75px;
+    margin-bottom:30px;
+  }
+}
+
+.dc-table-label {
+  display: none;
+}
+
+.dc-data-table {
+  font-size: 11px;
+}
+
+.dc-data-table th {
+  font-size: 14px !important;
+}
+
+
+/* bootstrap overrides */
+
+h1,h2,h3 {
+   font-weight:700;
+   font-family:'Ruda',arial,sans-serif;
+}
+
+h4 {
+   font-weight:400;
+   font-family:'Ruda',arial,sans-serif;
+}
+
+.jumbotron {
+  background-color:transparent;
+}
+.label-default {
+  background-color:#dddddd;
+}
+.page-header {
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top:1px solid #eeeeee;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:2px;
+}
+
+.col-sm-9.full {
+    width: 100%;
+}
+
+small.text-muted {
+  font-family:courier,courier-new,monospace;
+}
