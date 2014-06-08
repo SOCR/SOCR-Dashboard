@@ -1,0 +1,27 @@
+extends layout
+
+block content
+
+    //Wrapper
+    .container
+        .gridster
+            ul(style="list-style-type:none")
+                li(data-row="1",data-col="1",data-sizex="4",data-sizey="1", style="background-color:#333333;color:#dddddd; text-indent: 90px")
+                    h1= title
+                    p(style="text-indent: 150px") by Syed Husain
+                li#add(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#2c52d1; text-align: center;font-size:21px;color:#5d83f2")
+                    br
+                    i.fa.fa-plus-square.fa-5x
+                    p Add
+                li#remove(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#db004d;text-align: center;font-size:21px;color:#fb308d")
+                    br
+                    i.fa.fa-minus-square.fa-5x
+                    p Remove
+                li#settings(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#008500;text-align: center;font-size:21px;color:#30b930")
+                    br
+                    i.fa.fa-cog.fa-5x
+                    p Settings
+                li#help(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#e07902;text-align: center;font-size:21px;color:#ffab22")
+                    br
+                    i.fa.fa-question-circle.fa-5x
+                    p Help

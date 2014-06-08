@@ -1,0 +1,4 @@
+$ cat .gitignore
+/server/*
+/maint/DataCompressor/DataAggr/Debug/*
+/node_modules/*
