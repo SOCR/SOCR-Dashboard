@@ -1,7 +1,64 @@
 extends layout
 
 block content
-
+    .modal.hide.fade#addstart(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Add New Widget
+                .modal-body
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    //.btn-group
+                    //    a.btn.dropdown-toggle(data-toggle="dropdown",href="#") Action
+                    //        span.caret
+                    //    ul.dropdown-menu
+                    //        li A1
+                    //        li A2
+                    select#datasource(name="datasource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#datavar(name="datavar")
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Close
+                    button.btn.btn-primary#chartpage(type="button") Continue
+    .modal.hide.fade#addquant(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title Select Chart Type
+                .modal-body
+                    button.btn.btn-primary.chart-button#geo(type="button", style="padding:0px;margin:10px")
+                        img(src="images/geo.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#hist(type="button", style="padding:0px;margin:10px")
+                        img(src="images/hist.png",style="width:100px")
+                .modal-footer
+                    button.btn.btn-primary#genquant(type="button") Continue
+    .modal.hide.fade#addqual(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title Select Chart Type
+                .modal-body
+                    button.btn.btn-primary.chart-button#pie(type="button", style="padding:0px;margin:10px")
+                        img(src="images/pie.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#donut(type="button", style="padding:0px;margin:10px")
+                        img(src="images/donut.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#row(type="button", style="padding:0px;margin:10px")
+                        img(src="images/row.png",style="width:100px")
+                .modal-footer
+                    button.btn.btn-primary#genqual(type="button") Continue
     //Wrapper
     .container
         .gridster
@@ -9,7 +66,7 @@ block content
                 li(data-row="1",data-col="1",data-sizex="4",data-sizey="1", style="background-color:#333333;color:#dddddd; text-indent: 90px")
                     h1= title
                     p(style="text-indent: 150px") by Syed Husain
-                li#add(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#2c52d1; text-align: center;font-size:21px;color:#5d83f2")
+                li#add(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#2c52d1; text-align: center;font-size:21px;color:#5d83f2",href="#addstart",role="button",data-toggle="modal")
                     br
                     i.fa.fa-plus-square.fa-5x
                     p Add

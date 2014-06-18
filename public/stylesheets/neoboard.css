@@ -22,18 +22,13 @@ text
 color:#aaaaaa
 }
 
-.green {
-	background-color:#00CC00;
+.y.axis
+{
+display:none
 }
-.blue {
-	background-color:#0066FF;
-}
-.red {
-	background-color:#FF0000;
-}
-.orange {
-	background-color:#669999;
-}
-.purple {
-	background-color:#FF66CC;
+
+.x.axis text
+{
+fill:white;
+
 }

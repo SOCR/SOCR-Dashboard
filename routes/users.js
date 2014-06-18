@@ -2,6 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 /* GET all datasets. */
+router.get('/var/:id', function(req, res){
+	var db=req.db;
+	db.collection('var').find({name:req.params.id}).toArray(function(err, items){
+		res.json(items);
+	})
+});
+
 router.get('/all', function(req, res){
 	var db=req.db;
 	db.collection('all').find().toArray(function(err, items){
@@ -9,9 +16,16 @@ router.get('/all', function(req, res){
 	})
 });
 
-router.get('/fip', function(req, res){
+router.get('/allsuper', function(req, res){
 	var db=req.db;
-	db.collection('fip').find().toArray(function(err, items){
+	db.collection('allsuper').find().toArray(function(err, items){
+		res.json(items);
+	})
+});
+
+router.get('/super/:id', function(req, res){
+	var db=req.db;
+	db.collection('super').find({name:req.params.id}).toArray(function(err, items){
 		res.json(items);
 	})
 });

@@ -28,6 +28,7 @@ div.dc-chart {
 
 .dc-chart .pie-slice {
     fill: white;
+	font-weight: bold;
     font-size: 12px;
     cursor: pointer;
 }
@@ -57,7 +58,7 @@ div.dc-chart {
 }
 
 .dc-chart .axis path, .axis line {
-    fill: none;
+    display: none;
     stroke: #000;
     shape-rendering: crispEdges;
 }
@@ -208,6 +209,7 @@ div.dc-chart {
     fill: white;
     font-size: 12px;
     cursor: pointer;
+	font-weight: bold;
 }
 
 .dc-legend {

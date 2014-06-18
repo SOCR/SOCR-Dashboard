@@ -136,7 +136,7 @@ int main()
 		fin.open("DataSet.txt");
 		string s;
 		fin>>s;
-		fout<<"[{\"name\":\"Population\",\"type\":\"POP\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
+		fout<<"[{\"source\":\"2010_Census\",\"name\":\"Population\",\"type\":\"POP\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
 		vector<string> separated;
 		vector<int> censusData(100000,-10);
 		while(!fin.eof())
@@ -181,7 +181,7 @@ int main()
 			fin.open("DataSet.txt");
 			string s;
 			fin>>s;
-			fout<<"\n{\"name\":\""<<names[i]<<"\",\"type\":\"PCT\",\"super\":\"AGE\",\"data\":{\"trash\":\"trash\"";
+			fout<<"\n{\"source\":\"2010_Census\",\"name\":\""<<names[i]<<"\",\"type\":\"PCT\",\"super\":\"AGE\",\"data\":{\"trash\":\"trash\"";
 			vector<string> separated;
 			vector<double> censusData(100000,-10);
 			while(!fin.eof())
@@ -226,7 +226,7 @@ int main()
 			}
 			fout<<"}},";
 		}
-		fout<<"\n{\"name\":\"18-64\",\"type\":\"PCT\",\"super\":\"AGE\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"18-64\",\"type\":\"PCT\",\"super\":\"AGE\",\"data\":{\"trash\":\"trash\"";
 		for(int j=0;j<100000;j++)
 		{
 			if(pct18_64[j]<100)
@@ -248,7 +248,7 @@ int main()
 		fin.open("DataSet.txt");
 		string s;
 		fin>>s;
-		fout<<"\n{\"name\":\"Female\",\"type\":\"PCT\",\"super\":\"Gender\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Female\",\"type\":\"PCT\",\"super\":\"Gender\",\"data\":{\"trash\":\"trash\"";
 		vector<string> separated;
 		vector<double> censusData(100000,-10);
 		vector<double> males(100000,100);
@@ -282,7 +282,7 @@ int main()
 				fout<<",\"fip"<<j<<"\":"<<censusData[j];
 		}
 		fout<<"}},";
-		fout<<"\n{\"name\":\"Male\",\"type\":\"PCT\",\"super\":\"Gender\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Male\",\"type\":\"PCT\",\"super\":\"Gender\",\"data\":{\"trash\":\"trash\"";
 		for(int j=0;j<100000;j++)
 		{
 			if(males[j]<100)
@@ -306,7 +306,7 @@ int main()
 			string s;
 			fin>>s;
 			if(i!=0)
-				fout<<"\n{\"name\":\""<<races[i]<<"\",\"type\":\"PCT\",\"super\":\"Race\",\"data\":{\"trash\":\"trash\"";
+				fout<<"\n{\"source\":\"2010_Census\",\"name\":\""<<races[i]<<"\",\"type\":\"PCT\",\"super\":\"Race\",\"data\":{\"trash\":\"trash\"";
 			vector<string> separated;
 			vector<double> censusData(100000,-10);
 			while(!fin.eof())
@@ -349,14 +349,14 @@ int main()
 			}
 			fout<<"}},";
 		}
-		fout<<"\n{\"name\":\"Hispanic\",\"type\":\"PCT\",\"super\":\"Race\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Hispanic\",\"type\":\"PCT\",\"super\":\"Race\",\"data\":{\"trash\":\"trash\"";
 		for(int j=0;j<100000;j++)
 		{
 			if(hisp[j]<100)
 				fout<<",\"fip"<<j<<"\":"<<hisp[j];
 		}
 		fout<<"}},";
-		fout<<"\n{\"name\":\"Other\",\"type\":\"PCT\",\"super\":\"Race\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Other\",\"type\":\"PCT\",\"super\":\"Race\",\"data\":{\"trash\":\"trash\"";
 		for(int j=0;j<100000;j++)
 		{
 			if(other[j]<100)
@@ -373,7 +373,7 @@ int main()
 		fin.open("DataSet.txt");
 		string s;
 		fin>>s;
-		fout<<"\n{\"name\":\"Average_Commute_Time\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Average_Commute_Time\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
 		vector<string> separated;
 		vector<int> censusData(100000,-10);
 		while(!fin.eof())
@@ -412,7 +412,7 @@ int main()
 		fin.open("DataSet.txt");
 		string s;
 		fin>>s;
-		fout<<"\n{\"name\":\"Retail_Sales_Per_Capita\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Retail_Sales_Per_Capita\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
 		vector<string> separated;
 		vector<int> censusData(100000,-10);
 		while(!fin.eof())
@@ -451,7 +451,7 @@ int main()
 		fin.open("DataSet.txt");
 		string s;
 		fin>>s;
-		fout<<"\n{\"name\":\"Population_Density\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Population_Density\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
 		vector<string> separated;
 		vector<double> censusData(100000,-10);
 		while(!fin.eof())
@@ -491,7 +491,7 @@ int main()
 		fin.open("DataSet.txt");
 		string s;
 		fin>>s;
-		fout<<"\n{\"name\":\"Bachelor's_or_Higher\",\"type\":\"PCT\",\"super\":\"Highest_Level_of_Education\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Bachelor's_or_Higher\",\"type\":\"PCT\",\"super\":\"Highest_Level_of_Education\",\"data\":{\"trash\":\"trash\"";
 		vector<string> separated;
 		vector<double> censusData(100000,-10);
 		while(!fin.eof())
@@ -526,14 +526,14 @@ int main()
 				fout<<",\"fip"<<j<<"\":"<<censusData[j];
 		}
 		fout<<"}},";
-		fout<<"\n{\"name\":\"Highschool\",\"type\":\"PCT\",\"super\":\"Highest_Level_of_Education\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Highschool\",\"type\":\"PCT\",\"super\":\"Highest_Level_of_Education\",\"data\":{\"trash\":\"trash\"";
 		for(int j=0;j<100000;j++)
 		{
 			if(highschool[j]>=0)
 				fout<<",\"fip"<<j<<"\":"<<highschool[j];
 		}
 		fout<<"}},";
-		fout<<"\n{\"name\":\"Dropout\",\"type\":\"PCT\",\"super\":\"Highest_Level_of_Education\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Dropout\",\"type\":\"PCT\",\"super\":\"Highest_Level_of_Education\",\"data\":{\"trash\":\"trash\"";
 		for(int j=0;j<100000;j++)
 		{
 			if(dropout[j]<100)
@@ -550,7 +550,7 @@ int main()
 		fin.open("DataSet.txt");
 		string s;
 		fin>>s;
-		fout<<"\n{\"name\":\"Income_Per_Capita\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
+		fout<<"\n{\"source\":\"2010_Census\",\"name\":\"Income_Per_Capita\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
 		vector<string> separated;
 		vector<int> censusData(100000,-10);
 		while(!fin.eof())
