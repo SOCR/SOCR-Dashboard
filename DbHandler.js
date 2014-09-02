@@ -49,8 +49,8 @@ db.once('open', function callback(){
 	
 	
 	for(var variable in parsedJSON)
-	{
-		if(parsedJSON[variable]['super']!='N')
+	{	
+		if(parsedJSON[variable]['super']!='N'&&parsedJSON[variable]['super']!=undefined)
 		{
 			if(supersList.hasOwnProperty(parsedJSON[variable]['super']))
 				supersList[parsedJSON[variable]['super']].dependancies.push(parsedJSON[variable]['name'])
@@ -76,6 +76,7 @@ db.once('open', function callback(){
 		console.log("\nallsuper wiped")
 		superModel.remove({},function(err){
 			console.log("\nsuper wiped")
+			console.log(supersList)
 			for(var j in supersList)
 			{
 				var Doc=new allSuperModel(supersList[j])

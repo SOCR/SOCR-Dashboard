@@ -1,6 +1,31 @@
 extends layout
 
 block content
+    .modal.hide.fade#splashpage(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title= title
+                .modal-body
+                    p
+                        | Welcome to the 
+                        =title
+                        | . If this is your first time here, please click the "Help" tile for assistance. 
+                        br
+                        br
+                        | Please not that this webapp requires an HTML5 and Javascript compatible browser, and will not run on Internet Explorer.
+                        | You can find a more suitable alternative below
+                        br
+                        br
+                        a.btn.btn-primary(type="button", style="padding:0px;margin:10px", href="https://www.google.com/chrome/browser/") 
+                            img(src="images/chrome.png",style="width:75px")
+                        a.btn.btn-primary(type="button", style="padding:0px;margin:10px", href="https://www.mozilla.org/firefox/") 
+                            img(src="images/firefox.png",style="width:75px")
+                        a.btn.btn-primary(type="button", style="padding:0px;margin:10px", href="https://www.apple.com/safari/") 
+                            img(src="images/safari.png",style="width:75px")
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Continue
     .modal.hide.fade#addstart(tabindex="-1")
         .modal-dialog
             .modal-content
@@ -14,12 +39,6 @@ block content
                     span
                         strong Select the data source
                     br
-                    //.btn-group
-                    //    a.btn.dropdown-toggle(data-toggle="dropdown",href="#") Action
-                    //        span.caret
-                    //    ul.dropdown-menu
-                    //        li A1
-                    //        li A2
                     select#datasource(name="datasource")
                     br
                     br
@@ -43,6 +62,10 @@ block content
                         img(src="images/geo.png",style="width:100px")
                     button.btn.btn-primary.chart-button#hist(type="button", style="padding:0px;margin:10px")
                         img(src="images/hist.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#table(type="button", style="padding:0px;margin:10px")
+                        img(src="images/table.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#scatter(type="button", style="padding:0px;margin:10px")
+                        img(src="images/scatter.png",style="width:100px")
                 .modal-footer
                     button.btn.btn-primary#genquant(type="button") Continue
     .modal.hide.fade#addqual(tabindex="-1")
@@ -57,15 +80,192 @@ block content
                         img(src="images/donut.png",style="width:100px")
                     button.btn.btn-primary.chart-button#row(type="button", style="padding:0px;margin:10px")
                         img(src="images/row.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#box(type="button", style="padding:0px;margin:10px")
+                        img(src="images/box.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#bubble(type="button", style="padding:0px;margin:10px")
+                        img(src="images/bubble.png",style="width:100px")
                 .modal-footer
                     button.btn.btn-primary#genqual(type="button") Continue
+    .modal.hide.fade#tableconfig(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h4.modal-title Select Table Columns
+                .modal-body.tablebody
+                    select#col0(name="col0")
+                    div.fa-stack.fa-lg.addtable
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x +
+                .modal-footer
+                    button.btn.btn-primary#gentable(type="button") Continue
+    .modal.hide.fade#boxconfig(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Select Secondary Variable
+                .modal-body
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    select#boxsource(name="boxsource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#boxvar(name="boxvar")
+                .modal-footer
+                    button.btn.btn-primary#genbox(type="button") Continue
+    .modal.hide.fade#bubbleconfig(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Select Graphing Variables
+                .modal-body
+                    h4 x Axis
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    select#xbubblesource(name="xbubblesource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#xbubblevar(name="xbubblevar")
+                    br
+                    h4 y Axis
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    select#ybubblesource(name="ybubblesource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#ybubblevar(name="ybubblevar")
+                    br
+                    h4 Radius
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    select#rbubblesource(name="rbubblesource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#rbubblevar(name="rbubblevar")
+                    br
+                    h4 Color
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    select#cbubblesource(name="cbubblesource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#cbubblevar(name="cbubblevar")
+                .modal-footer
+                    button.btn.btn-primary#genbubble(type="button") Continue
+    .modal.hide.fade#scatterconfig(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Select Graphing Variables
+                .modal-body
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    select#yscattersource(name="yscattersource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#yscattervar(name="yscattervar")
+                    br
+                    h4 Color
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select the data source
+                    br
+                    select#cscattersource(name="cscattersource")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select the data variable
+                        br
+                    select#cscattervar(name="cscattervar")
+                .modal-footer
+                    button.btn.btn-primary#genscatter(type="button") Continue
+    .modal.hide.fade#helpbox(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Help
+                .modal-body
+                    p
+                        |Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tincidunt tempor diam vulputate condimentum. Fusce tellus metus, commodo nec semper vitae, cursus ut est. Donec felis quam, aliquam in venenatis eu, sollicitudin id lectus. Maecenas non ligula eu felis laoreet ultricies eget non nibh. Ut tristique eget nisi eget mollis. Sed faucibus mollis sagittis. Sed felis lacus, sodales ac nunc blandit, laoreet gravida lectus.
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Close
     //Wrapper
     .container
         .gridster
             ul(style="list-style-type:none")
-                li(data-row="1",data-col="1",data-sizex="4",data-sizey="1", style="background-color:#333333;color:#dddddd; text-indent: 90px")
+                li(data-row="1",data-col="1",data-sizex="6",data-sizey="1", style="background-color:#333333;color:#dddddd; text-indent: 90px")
                     h1= title
-                    p(style="text-indent: 150px") by Syed Husain
                 li#add(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#2c52d1; text-align: center;font-size:21px;color:#5d83f2",href="#addstart",role="button",data-toggle="modal")
                     br
                     i.fa.fa-plus-square.fa-5x
@@ -78,7 +278,12 @@ block content
                     br
                     i.fa.fa-cog.fa-5x
                     p Settings
-                li#help(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#e07902;text-align: center;font-size:21px;color:#ffab22")
+                li#help(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#e07902;text-align: center;font-size:21px;color:#ffab22",href="#helpbox",role="button",data-toggle="modal")
                     br
                     i.fa.fa-question-circle.fa-5x
                     p Help
+                li#export(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#9500c7;text-align: center;font-size:21px;color:#c929ff", href="#",download="DashboardData.json")
+                    br
+                    i.fa.fa-download.fa-5x
+                    br
+                    a#exportlink(href="#",download="DashboardData.json") Export
