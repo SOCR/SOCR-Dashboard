@@ -62,10 +62,10 @@ block content
                         img(src="images/geo.png",style="width:100px")
                     button.btn.btn-primary.chart-button#hist(type="button", style="padding:0px;margin:10px")
                         img(src="images/hist.png",style="width:100px")
-                    button.btn.btn-primary.chart-button#table(type="button", style="padding:0px;margin:10px")
-                        img(src="images/table.png",style="width:100px")
                     button.btn.btn-primary.chart-button#scatter(type="button", style="padding:0px;margin:10px")
                         img(src="images/scatter.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#number(type="button", style="padding:0px;margin:10px")
+                        img(src="images/number.gif",style="width:100px")
                 .modal-footer
                     button.btn.btn-primary#genquant(type="button") Continue
     .modal.hide.fade#addqual(tabindex="-1")
@@ -84,6 +84,8 @@ block content
                         img(src="images/box.png",style="width:100px")
                     button.btn.btn-primary.chart-button#bubble(type="button", style="padding:0px;margin:10px")
                         img(src="images/bubble.png",style="width:100px")
+                    button.btn.btn-primary.chart-button#number(type="button", style="padding:0px;margin:10px")
+                        img(src="images/number.gif",style="width:100px")
                 .modal-footer
                     button.btn.btn-primary#genqual(type="button") Continue
     .modal.hide.fade#tableconfig(tabindex="-1")
@@ -256,8 +258,30 @@ block content
                     button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
                     h4.modal-title Help
                 .modal-body
+                    h4 Overview
                     p
-                        |Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tincidunt tempor diam vulputate condimentum. Fusce tellus metus, commodo nec semper vitae, cursus ut est. Donec felis quam, aliquam in venenatis eu, sollicitudin id lectus. Maecenas non ligula eu felis laoreet ultricies eget non nibh. Ut tristique eget nisi eget mollis. Sed faucibus mollis sagittis. Sed felis lacus, sodales ac nunc blandit, laoreet gravida lectus.
+                        |This webapp combines and integrates multiple socioeconomic and medical datasets using big data analytics, in order to 
+                        |provide a lightweight, scalable platform for drawing inferences related to medical care, sociology, and economy in the United States.
+                    h4 Layout
+                    p
+                        |Operation of the exploratory dashboard is done primarily through the manipulation of various ‘tiles’. Each tile represents either a 
+                        |chart or a widget, and can be moved around the screen to suit the user’s preference. To move a tile, simply click-and-drag (if on a PC)
+                        |, or touch to drag-and-drop (if on a touch-enabled device). Upon starting the webapp, there are only 5 tiles on the screen, as well as
+                        | 1 additional tile to display the title. These 5 tiles can then be further manipulated to create additional tiles.
+                    h4 Chart Creation
+                    p
+                        |To create a new chart, start by clicking the ’Add’ tile in order to trigger the chart creation wizard. A dialogue box will then pop up 
+                        |asking to select the primary, filterable variable (usually the independent variable you will be investigating). Simply select a data 
+                        |source, then a variable derived from that source, and click ‘Continue’. A dialog box will then present a list of compatible chart types
+                        | based on your previously selected option. Select your desired chart type, and proceed through the rest of the customized wizard to
+                        | complete the tile
+                    h4 Chart Manipulation
+                    p
+                        |All charts in the dashboard come included with Crossfilter and Dc integration, allowing for a variety of interesting data
+                        | filtrations and manipulations. To filter a specific variable, click/tap on a specific portion or range of a chart. For example, 
+                        |to filter for females on a pie chart showing gender distributions, simply select the ‘Female’ slice of the pie chart. When a filter
+                        | is applied to a specific chart, all other charts will reflect that filter i.e. applying the aforementioned ‘Female’ filter will cause
+                        | all other charts to reflect data for females only
                 .modal-footer
                     button.btn.btn-default(type="button" data-dismiss="modal") Close
     //Wrapper
@@ -283,7 +307,9 @@ block content
                     i.fa.fa-question-circle.fa-5x
                     p Help
                 li#export(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#9500c7;text-align: center;font-size:21px;color:#c929ff", href="#",download="DashboardData.json")
-                    br
-                    i.fa.fa-download.fa-5x
-                    br
-                    a#exportlink(href="#",download="DashboardData.json") Export
+                    a#exportlink(href="#",download="DashboardData.json")
+                        div(style="height:165px;width:199px")
+                            br
+                            i.fa.fa-download.fa-5x
+                            br
+                            p Export

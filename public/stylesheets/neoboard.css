@@ -66,3 +66,21 @@ fill:white;
 {
 	width:350px;
 }
+
+a
+{
+	color:#c929ff
+}
+
+a:hover
+{
+	color:#c929ff;
+	text-decoration:none;
+}
+
+.div-count
+{
+	font-size:60px;
+	margin-top:40px;
+	margin-left:10px;
+}
