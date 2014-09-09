@@ -4235,13 +4235,51 @@ dc.dataCount(".dc-data-count")
 
 **/
 dc.dataCount = function(parent, chartGroup) {
+    var SPAN_CLASS = 'data-count-display';
     var _formatNumber = d3.format(",d");
     var _chart = dc.baseMixin({});
+    var _html = {some:"",all:""};
+
+    /**
+     #### html([object])
+     Gets or sets an optional object specifying HTML templates to use depending how many items are
+     selected. The text `%total-count` will replaced with the total number of records, and the text
+     `%filter-count` will be replaced with the number of selected records.
+     - all: HTML template to use if all items are selected
+     - some: HTML template to use if not all items are selected
+
+     ```js
+     counter.html({
+         some: "%filter-count out of %total-count records selected",
+         all: "All records selected. Click on charts to apply filters"
+     })
+     ```
+     **/
+    _chart.html = function(s) {
+        if (!arguments.length) return _html;
+        if(s.all)
+            _html.all = s.all;
+        if(s.some)
+            _html.some = s.some;
+        return _chart;
+    };
 
     _chart._doRender = function() {
-        _chart.selectAll(".total-count").text(_formatNumber(_chart.dimension().size()));
-        _chart.selectAll(".filter-count").text(_formatNumber(_chart.group().value()));
-
+        var tot = _chart.dimension().size(),
+            val = _chart.group().value();
+        var all = _formatNumber(tot);
+        var selected = _formatNumber(val);
+		var pct=Math.floor(Number(selected.replace(',',''))/Number(all.replace(',',''))*100)+'%';
+        if((tot===val)&&(_html.all!=="")) {
+            _chart.root().html(_html.all.replace('%total-count',all).replace('%filter-count',selected).replace('%div-count',pct));
+        }
+        else if(_html.some!=="") {
+            _chart.root().html(_html.some.replace('%total-count',all).replace('%filter-count',selected).replace('%div-count',pct));
+        } else {
+            _chart.selectAll(".total-count").text(all);
+            _chart.selectAll(".filter-count").text(selected);
+            _chart.selectAll(".div-count").text(pct);
+        }
         return _chart;
     };
 
@@ -4251,6 +4289,7 @@ dc.dataCount = function(parent, chartGroup) {
 
     return _chart.anchor(parent, chartGroup);
 };
+
 
 /**
 ## Data Table Widget

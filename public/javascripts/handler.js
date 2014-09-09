@@ -372,7 +372,7 @@ function finishGen(dimension, chart, index, dataset)
 					}
 					
 				}
-				return p;
+				return  p;
 			},
 			function(p,v) {
 				if(v[chart.otherData[1]]!=-999&&typeof v[chart.otherData[1]]!='undefined')
@@ -566,6 +566,7 @@ function tileSizes(t)
         case 'pie':
         case 'row':
         case 'donut':
+        case 'number':
             return [1,1,1,1];
             break;
 		case 'hist':
@@ -591,6 +592,9 @@ function titleGen(chart, data)
     {
         case 'pie':
             return 'Pie Chart of '+data.split("_").join(' ').toProperCase();
+            break;
+		case 'number':
+            return '';
             break;
         case 'row':
             return 'Bar Graph of '+data.split("_").join(' ').toProperCase();
@@ -634,6 +638,16 @@ function pieGen(dataset, idcode, colorKey)
             return d.key.split("_").join(' ') + "(" + Math.floor(d.value / all.value()/10) + "%)";
         });
 	getDimension(dataset, 'super',chart) 
+	return chart;
+}
+
+function numberGen(dataset, idcode, colorKey)
+{
+	$('#'+idcode).append('<div class="div-count"></div>')
+	$('#'+idcode).css({'color':colorKey[0]})
+    var chart = dc.dataCount('#'+idcode);
+	chart.dimension(cfilter).group(all);
+	dc.renderAll();
 	return chart;
 }
 
@@ -878,6 +892,9 @@ function chartGen(chartType, dataset, idcode, colorKey)
         case 'pie':
             return pieGen(dataset, idcode, colorList)
             break;
+		case 'number':
+            return numberGen(dataset, idcode, colorList)
+            break;
         case 'row':
             return barGen(dataset, idcode, colorList)
 			break;
@@ -922,6 +939,9 @@ function dropTile(dropcode, chartType)
         case 'donut':
             gridster.add_widget(dropcode, 1, 3);
             break;
+        case 'number':
+            gridster.add_widget(dropcode, 1, 2);
+            break;
 		case 'hist':
             gridster.add_widget(dropcode, 2, 3);
             break;
@@ -945,9 +965,12 @@ function dropTile(dropcode, chartType)
 
 function createTile(chartType, dataset)
 {
-     var tile={"tilenum":tiles.length};
+    var tile={"tilenum":tiles.length};
     var dropcode="";
     var sizes=tileSizes(chartType)
+	$.each($('.chart-button'), function(){
+			$(this).css({"background-image":"-webkit-linear-gradient(top, #757c82, #757882)"})
+	})
     tile.colorKey=Math.floor(360*Math.random())
     tile.color="hsl(" + tile.colorKey + ", 100%, 20%)";
     tile.type=chartType;
@@ -1369,5 +1392,10 @@ function endLoad()
 			$('#remove').css({color:'#db004d','background-color':'#fb308d'})
 		}
 	});
-	
+	$('.chart-button').click(function(){
+		$.each($('.chart-button'), function(){
+			$(this).css({"background-image":"-webkit-linear-gradient(top, #757c82, #757882)"})
+		})
+		$(this).css({"background-image":"-webkit-linear-gradient(top, #333333, #757882)"})
+	})
 }
