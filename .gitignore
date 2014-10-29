@@ -1,4 +1,5 @@
 $ cat .gitignore
 /server/*
 /maint/DataCompressor/DataAggr/Debug/*
+!/maint/DataCompressor/DataAggr/Debug/processed.json
 /node_modules/*
