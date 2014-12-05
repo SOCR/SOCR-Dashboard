@@ -1,7 +1,8 @@
-var tiles=[], people=[];
+var tiles=[];
+people=[];
 var varData=[], superVarData=[];
-var sourceDropDown=[{name: '---',value:'',subitems: []}];
-var varUsage={names:[],amounts:[],dataIn:[],dimensions:[], sources:[], bounds:[]};
+sourceDropDown=[{name: '---',value:'',subitems: []},{name: 'Custom',value:'Custom',subitems: []}];
+ varUsage={names:[],amounts:[],dataIn:[],dimensions:[], sources:[], bounds:[]};
 var superUsage={names:[],amounts:[],dataIn:[], dimensions:[], dependancies:[], sources:[]};
 var stateDimension=0;
 var statesJson=0;
@@ -14,6 +15,7 @@ var tableItems=0;
 var removeMode=false;
 
 $(document).ready(function(){
+
     $(".gridster ul").gridster({
         widget_margins: [0, 0],
         widget_base_dimensions: [200, 250/3],
@@ -85,7 +87,7 @@ function exportToCSV() {
 			headers.push(superUsage.names[j])
 		}
 	} 
-	
+	title=title.substring(0,50);
 	CSV+='\r\n'
 	
 	//populate file with population data
@@ -140,6 +142,7 @@ function populateDropdown()
     
     $("#datasource").change(function(){
         var value = $(this).val();
+		console.log(temp[value])
         var menu = $("#datavar");
         
         menu.empty();
@@ -1068,9 +1071,6 @@ function endLoad()
 	})
 	$('#add').click(function(){
 		populateDropdown();
-	})
-	 $('#settings').click(function(){
-		alert("Hello World");
 	})
 	$('#chartpage').click(function(){
 		var val=$('#datavar').val();
