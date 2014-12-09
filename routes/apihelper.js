@@ -10,6 +10,7 @@ var db;
 var reqvars, filtervars;
 function startup(database, args, res)
 {
+	
 	varUsage={names:[],amounts:[],dataIn:[],dimensions:[], sources:[], bounds:[]};
 	superUsage={names:[],amounts:[],dataIn:[], dimensions:[], dependancies:[], sources:[]};
 	completion=0;

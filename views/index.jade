@@ -313,3 +313,85 @@ block content
                             i.fa.fa-download.fa-5x
                             br
                             p Export
+    .modal.hide.fade#varcreator(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Create New Variable
+                .modal-body
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 1
+                    span
+                        strong Select First Variable
+                    br
+                    span
+                        strong Data source
+                    br
+                    select#primarynewvarsource(name="primarynewvarsource")
+                    br
+                    span
+                        strong Variable Name
+                    br
+                    select#primarynewvar(name="primarynewvar")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 2
+                    span
+                        strong Select Operation     
+                    a#operator.btn.btn-primary(type="button", style="padding-top:15px;margin:10px;width:50px;height:50px") 
+                        i#operator1.opicon.fa.fa-plus.fa-3x(style="padding-top:15px;margin:10px;width:50px;height:50px;display:none") 
+                        i#operator2.opicon.fa.fa-minus.fa-3x(style="padding-top:15px;margin:10px;width:50px;height:50px;display:none") 
+                        i#operator3.opicon.fa.fa-times.fa-3x(style="padding-top:15px;margin:10px;width:50px;height:50px;display:none") 
+                        img#operator0.opicon(style="padding-top:0px;margin:0px;width:75px;height:50px;",src="images/divide.png")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 3
+                    span
+                        strong Select Second Variable
+                        br
+                    span
+                        strong Data source
+                    br
+                    select#secondarynewvarsource(name="secondarynewvarsource")
+                    br
+                    span
+                        strong Variable Name
+                    br
+                    select#secondarynewvar(name="secondarynewvar")
+                    br
+                    br
+                    div.fa-stack.fa-lg
+                        i.fa.fa-circle.fa-stack-2x
+                        i.fa.fa-inverse.fa-stack-1x 4
+                        br
+                    span
+                        strong Enter Variable Name
+                        br
+                        input#newvarname(type="text", name="newvarname")
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Close
+                    button.btn.btn-primary#endcreate(type="button") Continue
+    .modal.hide.fade#customlist(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Custom Variables
+                .modal-body
+                    table#custvartable.display
+                        thead
+                            tr
+                                th Name
+                                th First Variable
+                                th Second Variable
+                                th Operation
+                        tbody#customtablebody
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Close
+                    button.btn.btn-primary#startcreate(type="button") Add
