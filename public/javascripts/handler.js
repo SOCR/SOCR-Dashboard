@@ -14,6 +14,7 @@ var chartType, dataset;
 var tableItems=0;
 var removeMode=false;
 
+//document initialization
 $(document).ready(function(){
 
     $(".gridster ul").gridster({
@@ -27,6 +28,8 @@ $(document).ready(function(){
     loadData();
 })
 
+
+/*
 function formatTable()
 {
 	if(tableItems<4)
@@ -64,8 +67,14 @@ function formatTable()
 			formatTable();
 		});
 	}
+}*/
+
+function sortDropdown ()
+{
+	sourceDropDown.sort(function (a,b){return b.name<a.name});
 }
 
+//exports code to CSV file (FROM: EXPORT_CALL)
 function exportToCSV() {
 	var CSV = "FIPS Code,", title='Dashboard', headers=['fip'];
 	for(var j in varUsage.dataIn)
@@ -110,10 +119,12 @@ function exportToCSV() {
 		});
 }
 
+//Formats string according to Dashboard standards
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
 
+//iterate and search to find index of source (linear search)
 function findSource(name)
 {
 	for(var j in sourceDropDown)
@@ -1069,6 +1080,7 @@ function endLoad()
 	stateDimension=cfilter.dimension(function(d){
 		return (Math.floor(Number(d.fip.substring(3))/1000))
 	})
+	sortDropdown();
 	$('#add').click(function(){
 		populateDropdown();
 	})
@@ -1396,6 +1408,6 @@ function endLoad()
 		$.each($('.chart-button'), function(){
 			$(this).css({"background-image":"-webkit-linear-gradient(top, #757c82, #757882)"})
 		})
-		$(this).css({"background-image":"-webkit-linear-gradient(top, #333333, #757882)"})
+		$(this).css({"background-image":"-webkit-linear-gradient(top, #222222, #777777)"})
 	})
 }

@@ -5,6 +5,8 @@ var var2, var1;
 var table;
 $(document).ready( function () {
     table=$('#custvartable').DataTable();
+	$('#custvartable_length').after('<br></br>')
+	$('#custvartable_filter').css({float:'left', 'text-align':'left'})
 } );
 $('#settings').click(function(){
 	$('#customlist').modal('show');

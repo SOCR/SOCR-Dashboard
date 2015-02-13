@@ -5,33 +5,36 @@
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\main.cpp" Name="FileName"/>
-      <int Value="7" Name="FirstVisibleLine"/>
-      <int Value="628" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds">
-        <IntVectorItem Value="10"/>
-        <IntVectorItem Value="25"/>
-        <IntVectorItem Value="31"/>
-        <IntVectorItem Value="37"/>
-        <IntVectorItem Value="47"/>
-        <IntVectorItem Value="62"/>
-        <IntVectorItem Value="100"/>
-        <IntVectorItem Value="553"/>
-        <IntVectorItem Value="596"/>
-        <IntVectorItem Value="677"/>
-      </IntVector>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\Debug\processed.json" Name="FileName"/>
-      <int Value="294" Name="FirstVisibleLine"/>
-      <int Value="310" Name="CurrentLine"/>
+      <int Value="50" Name="FirstVisibleLine"/>
+      <int Value="57" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\Debug\medicinpatient.csv" Name="FileName"/>
+      <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\Debug\processed.json" Name="FileName"/>
       <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="1" Name="CurrentLine"/>
+      <int Value="10" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\Debug\zip5equiv.in" Name="FileName"/>
+      <int Value="13" Name="FirstVisibleLine"/>
+      <int Value="14" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\Debug\labordata.csv" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\Debug\sortedfipzip.out" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
