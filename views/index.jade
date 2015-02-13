@@ -313,6 +313,12 @@ block content
                             i.fa.fa-download.fa-5x
                             br
                             p Export
+                li#import(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#e07902;text-align: center;font-size:21px;color:#ffab22",href="#",role="button",data-toggle="modal")
+                    input#fileElem(type="file", name="files", multiple="", onchange="handleFileSelect()")
+                    br
+                    i.fa.fa-upload.fa-5x
+                    p Import
+
     .modal.hide.fade#varcreator(tabindex="-1")
         .modal-dialog
             .modal-content
