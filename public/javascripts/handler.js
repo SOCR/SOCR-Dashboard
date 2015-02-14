@@ -72,6 +72,15 @@ function formatTable()
 function sortDropdown ()
 {
 	sourceDropDown.sort(function (a,b){return b.name<a.name});
+	for(var j in sourceDropDown)
+	{
+		sourceDropDown[j].subitems.sort(function (a,b){
+		if(a.name<b.name)
+			return -1;
+		else
+			return 1;
+		});
+	}
 }
 
 //exports code to CSV file (FROM: EXPORT_CALL)
@@ -153,7 +162,6 @@ function populateDropdown()
     
     $("#datasource").change(function(){
         var value = $(this).val();
-		console.log(temp[value])
         var menu = $("#datavar");
         
         menu.empty();
@@ -1080,8 +1088,8 @@ function endLoad()
 	stateDimension=cfilter.dimension(function(d){
 		return (Math.floor(Number(d.fip.substring(3))/1000))
 	})
-	sortDropdown();
 	$('#add').click(function(){
+		sortDropdown();
 		populateDropdown();
 	})
 	$('#chartpage').click(function(){
@@ -1410,4 +1418,5 @@ function endLoad()
 		})
 		$(this).css({"background-image":"-webkit-linear-gradient(top, #222222, #777777)"})
 	})
+	sortDropdown();
 }
