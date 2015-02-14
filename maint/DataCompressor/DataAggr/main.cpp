@@ -55,7 +55,7 @@ int main()
 {
 	ifstream fin("zip5equiv.in");
 	ofstream fout("sortedfipzip.out");
-	const bool CENSUS=true, PROCESSBUSINESS=false, BUSINESS=false, LABOR=true,  INHOSPITAL=true, PHYSDATA=true;
+	const bool CENSUS=true, PROCESSBUSINESS=false, BUSINESS=false, LABOR=true,  INHOSPITAL=true, PHYSDATA=false, PHARMADATA=true;
 	int toSpecial[]={2275,13069,13299,13219,13155,13277,13319,13103,13215,13259,13123,13271,13195,13301,13303,13293,13317,13307,0,18075,19117,31145,20093,20093,20203,20175,20203,21239,21221,21187,21057,21201,27095,28159,28131,29179,29117,30107,31091,31165,31175,37197,38041,46063,45075,46043,46119,47143,47177,48191,48487,48191,48459,48381,48191,48465,48317,48269,48329,48421,48483,48505};
 	int fromSpecial[]={2198,13003,13005,13013,13017,13019,13023,13029,13053,13061,13085,13091,13105,13125,13141,13171,13181,13197,15005,18009,19039,20039,20055,20067,20071,20081,20109,21005,21033,21041,21053,21097,27065,28019,28039,29035,29079,30037,31005,31013,31071,37003,38001,38011,45017,46035,46065,47007,47015,48011,48023,48045,48063,48065,48075,48105,48115,48155,48173,48195,48211,48247};
 	cout<<"Genarating FIPS-ZIP Database....";
@@ -1020,7 +1020,160 @@ int main()
 				if(zip2fip[zipcode]<0)
 				{
 					totalWrong++;
+					cout<<zipcode<<" total: "<<totalWrong<<endl;
+				}
+				else
+				{
+					if(tokens[1][0]=='M')
+						data[0][zip2fip[zipcode]]++;
+					else
+						data[1][zip2fip[zipcode]]++;
+				}
+				s="";
+				tokens={};
+				std::getline(fin, s);
+				split(s, ',', tokens);
+			}
+			string outputname[2]={"Male_Practitioners", "Female_Practitioners"};
+			for(int m=0;m<2;m++)
+			{
+				fout<<"\n{\"source\":\""<<source<<"\",\"name\":\""<<outputname[m]<<"\",\"type\":\"ABS\",\"super\":\"Practitioner_Gender\",\"data\":{\"trash\":\"trash\"";
+				for(int j=0;j<100000;j++)
+				{
+					if(data[0][j]+data[1][j]==0&&fipIndex[j]>=0)
+						fout<<",\"fip"<<j<<"\":-999";
+					else if(fipIndex[j]<0&&data[0][j]+data[1][j]>0)
+					{
+						int k;
+						for(k=0;fromSpecial[k]<j;k++);
+						if(fromSpecial[k]==j)
+							data[m][toSpecial[k]]+=data[m][fromSpecial[k]];
+						else
+							cout<<"FIP: "<<j<<" data: "<<data[m][j]<<" fipIndex: "<<fipIndex[j]<<endl;
+					}
+					else if(data[0][j]+data[1][j]>0&&fipIndex[j]>=0)
+						fout<<",\"fip"<<j<<"\":"<<(data[m][j]);
+				}
+				fout<<"}},";
+				
+			}
+		}
+		
+		//Avg number of dependants
+		if(true)
+		{
+			cout<<"   Dependants per practitioner:\n";
+			fin.close();
+			fout.close();
+			fin.open("physiciandataedited.csv");
+			fout.open("processed.json", fstream::app);
+			std::getline(fin, s);
+			s="";
+			int zipcode;
+			tokens={};
+			std::getline(fin, s);
+			
+			//[Male, Female]
+			vector<int> data(100000,0);
+			vector<int> amounts(100000, 0);
+			split(s, ',', tokens);
+			int totalWrong=0;
+			while(!fin.eof())
+			{
+				zipcode=from_string(tokens[0].substr(0,5));
+				if(zip2fip[zipcode]<0)
+				{
+					totalWrong++;
 					
+				}
+				else
+				{
+					if(amounts[zip2fip[zipcode]]==0)
+					{
+						data[zip2fip[zipcode]]=from_string(tokens[5]);
+					}
+					else
+					{
+						data[zip2fip[zipcode]]=(from_string(tokens[5])+amounts[zip2fip[zipcode]]*data[zip2fip[zipcode]])/(amounts[zip2fip[zipcode]]+1);
+					}
+					
+				}
+				s="";
+				tokens={};
+				std::getline(fin, s);
+				split(s, ',', tokens);
+			}
+			string outputname="Medicare_Beneficiaries_Per_Provider";
+			fout<<"\n{\"source\":\""<<source<<"\",\"name\":\""<<outputname<<"\",\"type\":\"ABS\",\"super\":\"N\",\"data\":{\"trash\":\"trash\"";
+			for(int j=0;j<100000;j++)
+			{
+				if(data[j]==0&&fipIndex[j]>=0)
+					fout<<",\"fip"<<j<<"\":-999";
+				else if(fipIndex[j]<0&&data[j]>0)
+				{
+					int k;
+					for(k=0;fromSpecial[k]<j;k++);
+					if(fromSpecial[k]==j)
+						data[toSpecial[k]]+=data[fromSpecial[k]];
+					else
+						cout<<"FIP: "<<j<<" data: "<<data[j]<<" fipIndex: "<<fipIndex[j]<<endl;
+				}
+				else if(data[j]>0&&fipIndex[j]>=0)
+					fout<<",\"fip"<<j<<"\":"<<(data[j]);
+			}
+			fout<<"}},";
+		}
+	}
+	if(PHARMADATA)
+	{
+		cout<<"Processing Physician Data (2011)...\n";
+		fin.close();
+		fout.close();
+		fin.open("sortedfipzip.out");
+		string s;
+		vector<string> tokens;
+		std::getline(fin, s);
+		vector<int> zip2fip(100000,-10);
+		string source="Physician_Utilization_and_Payment_Data";
+		
+		
+		//read in fipzip hashmap
+		while(!fin.eof())
+		{
+			s="";
+			tokens={};
+			std::getline(fin, s);
+			split(s, ' ', tokens);
+			zip2fip[from_string(tokens[0])]=from_string(tokens[1]);
+		}
+		
+		vector<int> total(100000,0);
+		
+		//Practitioner Gender
+		if(true)
+		{
+			cout<<"   Practitioner Gender:\n";
+			fin.close();
+			fout.close();
+			fin.open("physiciandataedited.csv");
+			fout.open("processed.json", fstream::app);
+			std::getline(fin, s);
+			s="";
+			int zipcode;
+			tokens={};
+			std::getline(fin, s);
+			
+			//[Male, Female]
+			vector<vector<int>> data(2,vector<int>(100000,0));
+			split(s, ',', tokens);
+			int totalWrong=0;
+			while(!fin.eof())
+			{
+				zipcode=from_string(tokens[0].substr(0,5));
+				if(zip2fip[zipcode]<0)
+				{
+					totalWrong++;
+					cout<<zipcode<<" total: "<<totalWrong<<endl;
 				}
 				else
 				{
