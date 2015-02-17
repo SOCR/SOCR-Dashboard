@@ -94,33 +94,62 @@ function handleFileSelect() {
   })
 };
 
+
 function passDataToIndexedDB(dataObj) {
   // IndexedDB
   if (!window.indexedDB) {
-      window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-  }
-  var request = indexedDB.open("DataStorage");
-  request.onerror = function(event) {
-    alert("Database error: " + event.target.errorCode);
+      window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
+  } else {
+      var request = indexedDB.open("DataStorage");
+      request.onerror = function(event) {
+        alert("Database error: " + event.target.errorCode);
+      };
+      request.onupgradeneeded = function(event) {
+        var db = event.target.result;
+        // Create another object store called "DataTable" with the autoIncrement flag set as true.    
+        var objStore = db.createObjectStore("DataTable", { autoIncrement : true });
+        //check dataObj data length
+        //go thru each row and add to string
+        //if new name or super is different then complete old one and insert into table
+        //then start new string
+        //repeat
+        var source = "";
+        var variable = "";
+        var category = "";
+
+        for (i=0; i < dataObj.data.length; i++) {
+          if (dataObj.data[i].source != source || dataObj.data[i].category != category || dataObj.data[i].variable != variable) {
+            if (text != undefined){
+              var text = text.concat('}}');
+              var jsonObj = JSON.parse(text);
+              objStore.add(jsonObj);
+            }
+            var text = '{"source":"' + dataObj.data[i].source + '", "variable":"' + dataObj.data[i].variable + '", "category":"' 
+            + dataObj.data[i].category + '", "type":"' + dataObj.data[i].type + '", "data":{"' + dataObj.data[i].fips + '":' 
+            + dataObj.data[i].data;
+
+            var source = dataObj.data[i].source;
+            var category = dataObj.data[i].category;
+            var variable = dataObj.data[i].variable;
+
+            continue;
+
+          } else {
+            var text = text.concat(', "' + dataObj.data[i].fips + '":' + dataObj.data[i].data);
+              if (i == dataObj.data.length-1) {
+                var text = text.concat('}}');
+                var jsonObj = JSON.parse(text);
+                objStore.add(jsonObj);
+              }
+
+          }
+        } 
+      };
   };
-  request.onupgradeneeded = function(event) {
-    var db = event.target.result;
-    // Create another object store called "DataTable" with the autoIncrement flag set as true.    
-    var objStore = db.createObjectStore("DataTable", { autoIncrement : true });
-    //alert(dataObj.data.length);
-    for (i=0; i < dataObj.data.length; i++) {
-      objStore.add(dataObj.data[i]['data']);
-      //alert(dataObj.data[i]['data']);
-    }
-
-  };
+}
 
 
-};
-
-
-
-// // Delete Database
+// // Delete Database 
 // window.indexedDB.deleteDatabase("DataStorage");
 
 
