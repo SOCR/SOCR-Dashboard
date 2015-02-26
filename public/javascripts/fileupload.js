@@ -1,101 +1,99 @@
-/*
-// IndexedDB
-if (!window.indexedDB) {
-    window.alert("Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available.");
-}
- 
-
-/*var db;
-var request = indexedDB.open("MyTestDatabase");
-request.onerror = function(event) {
-  alert("Database error: " + event.target.errorCode);
-};
-request.onsuccess = function(event) {
-  db = event.target.result;
-};
-
-// This event is only implemented in recent browsers
-request.onupgradeneeded = function(event) { 
-  var db = event.target.result;
-
-  // Create an objectStore for this database
-  var objectStore = db.createObjectStore("name", { keyPath: "myKey" });
-};
-*/
-
-// ---------------------
-/*// This is what our customer data looks like.
-const customerData = [
-  { ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-  { ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
-];*/
-/*
-const dbName = "the_name";
-
-// Open the indexedDB.
-var request = indexedDB.open(dbName, 3);
-
-request.onupgradeneeded = function (event) {
-
-    var db = event.target.result;
-
-    // Create another object store called "names" with the autoIncrement flag set as true.    
-    var objStore = db.createObjectStore("names", { autoIncrement : true });
-
-    // Because the "names" object store has the key generator, the key for the name value is generated automatically.
-    // The added records would be like:
-    // key : 1 => value : "Bill"
-    // key : 2 => value : "Donna"
-    for (var i in customerData) {
-        objStore.add(customerData[i].name);
-    }
-}*/
-
-// ---------------------
-
-/*
-request.onerror = function(event) {
-  // Handle errors!
-};
-request.onsuccess = function(event) {
-  var db = event.target.result;
-  var transaction = db.transaction(["customers"]);
-  var objectStore = transaction.objectStore("customers");
-  var request = objectStore.get("555-55-5555");
-  request.onerror = function(event) {
-  // Handle errors!
-};
-  request.onsuccess = function(event) {
-  // Do something with the request.result!
-  alert("Name for SSN 555-55-5555 is " + request.result.name);
-  
-};
-};*/
-/*var request = db.transaction(["customers"], "readwrite")
-                .objectStore("customers")
-                .delete("444-44-4444");
-request.onsuccess = function(event) {
-  // It's gone!
-  alert("It's gone!");
-};*/
 
 // Uploading file and Parse 
 function handleFileSelect() {
+  //open and create database and table
+  createDBandTable();
+  var t0 = performance.now();
+  
+  var text;
+  var source;
+  var variable;
+  var category;
+
   var fileInput = document.getElementById("fileElem");
 
   var results = Papa.parse(fileInput.files[0], {
     header: true,
     dynamicTyping: true,
-    complete: function(results) {
-      console.log(results);
+    // step: function(row){
+    //   console.log("Row:", row);
+    // },
+    chunk: function(block){
+      if (text == undefined){
+        for (i=0; i < block.data.length; i++) {
+          if (block.data[i].source != source || block.data[i].category != category || block.data[i].variable != variable) {
+            if (text){
+              text = text.concat('}}');
+              var jsonObj = JSON.parse(text);
+              writeDataToDB(jsonObj);
+              text = undefined;
+              text = '{"source":"' + block.data[i].source + '", "variable":"' + block.data[i].variable + '", "category":"' 
+              + block.data[i].category + '", "type":"' + block.data[i].type + '", "data":{"' + block.data[i].fips + '":' 
+              + block.data[i].data;
+              source = block.data[i].source;
+              category = block.data[i].category;
+              variable = block.data[i].variable;
+              continue;
+            }
+            text = '{"source":"' + block.data[i].source + '", "variable":"' + block.data[i].variable + '", "category":"' 
+              + block.data[i].category + '", "type":"' + block.data[i].type + '", "data":{"' + block.data[i].fips + '":' 
+              + block.data[i].data;
+            source = block.data[i].source;
+            category = block.data[i].category;
+            variable = block.data[i].variable;
+          } else {
+            text = text.concat(', "' + block.data[i].fips + '":' + block.data[i].data);
+          }
+        }
+      } else {
+        for (i=0; i < block.data.length; i++) {
+          if (block.data[i].source == source && block.data[i].category == category && block.data[i].variable == variable) {
+            text = text.concat(', "' + block.data[i].fips + '":' + block.data[i].data);
+          } else {
+            // pass text to indexeddb 
+            text = text.concat('}}');
+            var jsonObj = JSON.parse(text);
+            writeDataToDB(jsonObj);
+            text = undefined;
+            text = '{"source":"' + block.data[i].source + '", "variable":"' + block.data[i].variable + '", "category":"' 
+              + block.data[i].category + '", "type":"' + block.data[i].type + '", "data":{"' + block.data[i].fips + '":' 
+              + block.data[i].data;
+            source = block.data[i].source;
+            category = block.data[i].category;
+            variable = block.data[i].variable;
+          }
+        }
+      }
+    },
+    complete: function() {
+      if (text.indexOf("undefined") < 0){
+        text = text.concat('}}');
+        var jsonObj = JSON.parse(text);
+        writeDataToDB(jsonObj);
+      }
 
-      passDataToIndexedDB(results);
+      var t1 = performance.now();
+      console.log("CSV objects: " + (t1-t0) + " milliseconds.");
+
+      // getValue();
     }
   })
 };
 
+function writeDataToDB(dataObj){
+  var request = indexedDB.open("DataStorage");
+  request.onerror = function(event) {
+    alert("Database error: " + event.target.errorCode);
+  };
+  request.onsuccess = function(event){
+    var db = event.target.result;
+    var transaction = db.transaction(["DataTable"], "readwrite");
+    var objStore = transaction.objectStore("DataTable");
+    objStore.add(dataObj); 
+  };
+}
 
-function passDataToIndexedDB(dataObj) {
+function createDBandTable() {
   // IndexedDB
   if (!window.indexedDB) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
@@ -108,46 +106,33 @@ function passDataToIndexedDB(dataObj) {
         var db = event.target.result;
         // Create another object store called "DataTable" with the autoIncrement flag set as true.    
         var objStore = db.createObjectStore("DataTable", { autoIncrement : true });
-        //check dataObj data length
-        //go thru each row and add to string
-        //if new name or super is different then complete old one and insert into table
-        //then start new string
-        //repeat
-        var source = "";
-        var variable = "";
-        var category = "";
-
-        for (i=0; i < dataObj.data.length; i++) {
-          if (dataObj.data[i].source != source || dataObj.data[i].category != category || dataObj.data[i].variable != variable) {
-            if (text != undefined){
-              var text = text.concat('}}');
-              var jsonObj = JSON.parse(text);
-              objStore.add(jsonObj);
-            }
-            var text = '{"source":"' + dataObj.data[i].source + '", "variable":"' + dataObj.data[i].variable + '", "category":"' 
-            + dataObj.data[i].category + '", "type":"' + dataObj.data[i].type + '", "data":{"' + dataObj.data[i].fips + '":' 
-            + dataObj.data[i].data;
-
-            var source = dataObj.data[i].source;
-            var category = dataObj.data[i].category;
-            var variable = dataObj.data[i].variable;
-
-            continue;
-
-          } else {
-            var text = text.concat(', "' + dataObj.data[i].fips + '":' + dataObj.data[i].data);
-              if (i == dataObj.data.length-1) {
-                var text = text.concat('}}');
-                var jsonObj = JSON.parse(text);
-                objStore.add(jsonObj);
-              }
-
-          }
-        } 
       };
   };
 }
 
+
+function getValue(){
+  var request = indexedDB.open("DataStorage");
+  request.onerror = function(event) {
+        alert("Database error: " + event.target.errorCode);
+      };
+  request.onsuccess = function(event){
+    var db = event.target.result;
+    var objStore = db.transaction("DataTable").objectStore("DataTable");
+    var cursorRequest = objStore.openCursor();
+    cursorRequest.onsuccess = function (event) {
+      var curCursor = event.target.result;
+      if (curCursor) {
+        var value = curCursor.value.variable;
+        alert(value);
+        curCursor.continue();
+      }
+    }
+    cursorRequest.onerror = function (event) {
+      alert("Database error: " + event.target.errorCode);
+    }
+  }
+}                
 
 // // Delete Database 
 // window.indexedDB.deleteDatabase("DataStorage");
