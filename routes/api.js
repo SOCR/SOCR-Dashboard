@@ -2,7 +2,26 @@ var express = require('express');
 var router = express.Router();
 var startupAPI=require('./apihelper');
 
+function collect() {
+    var ret = {};
+    var len = arguments.length;
+    for (var i=0; i<len; i++) {
+        for (p in arguments[i]) {
+            if (arguments[i].hasOwnProperty(p)) {
+                ret[p] = arguments[i][p];
+            }
+        }
+    }
+    return ret;
+}
 
+function changeToNum(obj){
+    newObj = {};
+    for (var each in obj) {
+        newObj[each] = parseFloat(obj[each]);
+    }
+    return newObj;
+}
 
 function getProp(req){
     var reqObj = {} ;
