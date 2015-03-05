@@ -4,6 +4,9 @@ function handleFileSelect() {
   //open and create database and table
   createDBandTable();
   var t0 = performance.now();
+
+  var variablesCheck = true;
+  var listOfVar = ["source", "category", "variable", "type", "fips", "data"];
   
   var text;
   var source;
@@ -19,6 +22,16 @@ function handleFileSelect() {
     //   console.log("Row:", row);
     // },
     chunk: function(block){
+      if (variablesCheck){
+        for (i=0; i < block.meta.fields.length; i++){
+          if (listOfVar.indexOf(block.meta.fields[i]) < 0){
+            alert("One or more of the header fields are incorrectly spelled. Correct spellings should be: source, category, variable, type, fips, data. Please refresh page and try again.");
+            return;
+          }
+        }
+        variablesCheck = false;
+      }
+
       if (text == undefined){
         for (i=0; i < block.data.length; i++) {
           if (block.data[i].source != source || block.data[i].category != category || block.data[i].variable != variable) {
@@ -66,6 +79,9 @@ function handleFileSelect() {
       }
     },
     complete: function() {
+      if (variablesCheck){
+        return;
+      }
       if (text.indexOf("undefined") < 0){
         text = text.concat('}}');
         var jsonObj = JSON.parse(text);
