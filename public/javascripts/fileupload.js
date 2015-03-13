@@ -1,6 +1,8 @@
 
 // Uploading file and Parse 
 function handleFileSelect() {
+
+
   //open and create database and table
   var indexedDBname = "DataStorage";
   var indexedDBtable = "DataTable";
@@ -11,19 +13,15 @@ function handleFileSelect() {
   var variablesCheck = true;
   var listOfVar = ["source", "category", "variable", "type", "fips", "data"];
   
-  var text;
-  var source;
-  var variable;
-  var category;
+  var blockCount = 0;
+  var textObj = {data:[], firstStatement: true, multiple: false};
+
 
   var fileInput = document.getElementById("fileElem");
 
   var results = Papa.parse(fileInput.files[0], {
     header: true,
     dynamicTyping: true,
-    // step: function(row){
-    //   console.log("Row:", row);
-    // },
     chunk: function(block){
 
       if (variablesCheck){
@@ -33,63 +31,176 @@ function handleFileSelect() {
         variablesCheck = false;
       }
 
+      // console.log(block.data.length);
 
-      if (text == undefined){
-        for (i=0; i < block.data.length; i++) {
-          if (block.data[i].source != source || block.data[i].category != category || block.data[i].variable != variable) {
-            if (text){
-              text = text.concat('}}');
-              var jsonObj = JSON.parse(text);
-              writeDataToDB(jsonObj, indexedDBname, indexedDBtable);
-              text = undefined;
-              text = '{"source":"' + block.data[i].source + '", "variable":"' + block.data[i].variable + '", "category":"' 
-              + block.data[i].category + '", "type":"' + block.data[i].type + '", "data":{"' + block.data[i].fips + '":' 
-              + block.data[i].data;
-              source = block.data[i].source;
-              category = block.data[i].category;
-              variable = block.data[i].variable;
-              continue;
-            }
-            text = '{"source":"' + block.data[i].source + '", "variable":"' + block.data[i].variable + '", "category":"' 
-              + block.data[i].category + '", "type":"' + block.data[i].type + '", "data":{"' + block.data[i].fips + '":' 
-              + block.data[i].data;
-            source = block.data[i].source;
-            category = block.data[i].category;
-            variable = block.data[i].variable;
-          } else {
-            text = text.concat(', "' + block.data[i].fips + '":' + block.data[i].data);
-          }
-        }
-      } else {
-        for (i=0; i < block.data.length; i++) {
-          if (block.data[i].source == source && block.data[i].category == category && block.data[i].variable == variable) {
-            text = text.concat(', "' + block.data[i].fips + '":' + block.data[i].data);
-          } else {
-            // pass text to indexeddb 
-            text = text.concat('}}');
-            var jsonObj = JSON.parse(text);
+      for (i=0; i < block.data.length; i++){
+        if (block.data[i].source != textObj.source || block.data[i].category != textObj.category || block.data[i].variable != textObj.variable){
+          if (typeof textObj.text != 'undefined'){
+            textObj.text = textObj.text + '}}';
+            // console.log(textObj.text);
+            var jsonObj = JSON.parse(textObj.text);
             writeDataToDB(jsonObj, indexedDBname, indexedDBtable);
-            text = undefined;
-            text = '{"source":"' + block.data[i].source + '", "variable":"' + block.data[i].variable + '", "category":"' 
-              + block.data[i].category + '", "type":"' + block.data[i].type + '", "data":{"' + block.data[i].fips + '":' 
-              + block.data[i].data;
-            source = block.data[i].source;
-            category = block.data[i].category;
-            variable = block.data[i].variable;
+            textObj.text = undefined;
+            textObj.data = [];
+            textObj.firstStatement = true;
+            textObj.multiple = false;
+            // console.log('A');
+          }
+          if (i != block.data.length - 1){
+            if (block.data[i].fips == block.data[i+1].fips){
+              textObj.multiple = true;
+              textObj.source = block.data[i].source;
+              textObj.category = block.data[i].category;
+              textObj.variable = block.data[i].variable;
+              textObj.type = block.data[i].type;
+              textObj.fips = block.data[i].fips;
+              textObj.data.push(block.data[i].data);
+              // console.log('B');
+            } else if (textObj.firstStatement && !textObj.multiple && typeof textObj.text == 'undefined'){
+              textObj.source = block.data[i].source;
+              textObj.category = block.data[i].category;
+              textObj.variable = block.data[i].variable;
+              textObj.type = block.data[i].type;
+              textObj.fips = block.data[i].fips;
+              textObj.data.push(block.data[i].data);
+              textObj.text = '{"source":"' + textObj.source + '", "variable":"' + textObj.variable + '", "category":"' 
+                + textObj.category + '", "type":"' + textObj.type + '", "data":{"' + textObj.fips + '":' + textObj.data[0];
+              textObj.data = [];
+              textObj.firstStatement = false;
+              // console.log('C');
+            }
+          } else if (textObj.firstStatement && !textObj.multiple && typeof textObj.text == 'undefined') { // last line of something different
+              textObj.source = block.data[i].source;
+              textObj.category = block.data[i].category;
+              textObj.variable = block.data[i].variable;
+              textObj.type = block.data[i].type;
+              textObj.fips = block.data[i].fips;
+              textObj.data.push(block.data[i].data);
+              textObj.text = '{"source":"' + textObj.source + '", "variable":"' + textObj.variable + '", "category":"' 
+                + textObj.category + '", "type":"' + textObj.type + '", "data":{"' + textObj.fips + '":' + textObj.data[0];
+              textObj.data = [];
+              textObj.firstStatement = false;
+              blockCount = blockCount + 1;
+              // console.log('I');
+          }
+
+
+        } else {
+          if (i != block.data.length - 1){
+            if (block.data[i].fips == block.data[i+1].fips){
+              textObj.multiple = true;
+              textObj.source = block.data[i].source;
+              textObj.category = block.data[i].category;
+              textObj.variable = block.data[i].variable;
+              textObj.type = block.data[i].type;
+              textObj.fips = block.data[i].fips;
+              textObj.data.push(block.data[i].data);
+              // console.log('D');
+            } else {
+              if (textObj.multiple && textObj.firstStatement && typeof textObj.text == 'undefined'){
+                textObj.data.push(block.data[i].data);
+                textObj.text = '{"source":"' + textObj.source + '", "variable":"' + textObj.variable + '", "category":"' 
+                + textObj.category + '", "type":"' + textObj.type + '", "data":{"' + textObj.fips + '":' + textObj.data.reduce(function(a,b) {return a+b;})/textObj.data.length;
+                textObj.multiple = false;
+                textObj.firstStatement = false;
+                textObj.source = block.data[i].source;
+                textObj.category = block.data[i].category;
+                textObj.variable = block.data[i].variable;
+                textObj.fips = block.data[i].fips;
+                textObj.data = [];
+                // console.log('E');
+              } else if (!textObj.multiple && !textObj.firstStatement && typeof textObj.text != 'undefined'){
+                textObj.source = block.data[i].source;
+                textObj.category = block.data[i].category;
+                textObj.variable = block.data[i].variable;
+                textObj.type = block.data[i].type;
+                textObj.fips = block.data[i].fips;
+                textObj.data.push(block.data[i].data);
+                textObj.text = textObj.text + ', "' + textObj.fips + '":' + textObj.data[0];
+                textObj.data = [];
+                // console.log('H');
+              } else if (textObj.multiple && !textObj.firstStatement && typeof textObj.text != 'undefined'){
+                textObj.source = block.data[i].source;
+                textObj.category = block.data[i].category;
+                textObj.variable = block.data[i].variable;
+                textObj.type = block.data[i].type;
+                textObj.fips = block.data[i].fips;
+                textObj.data.push(block.data[i].data);
+                textObj.text = textObj.text + ', "' + textObj.fips + '":' + textObj.data.reduce(function(a,b) {return a+b;})/textObj.data.length;
+                textObj.multiple = false;
+                textObj.data = [];
+                // console.log('J');
+              }
+            }
+
+          } else { //last line 
+            if (textObj.multiple && !textObj.firstStatement && typeof textObj.text != 'undefined'){
+              textObj.data.push(block.data[i].data);
+              blockCount = blockCount + 1;
+              // console.log('F');
+              // console.log(blockCount);
+            } else if (!textObj.multiple && !textObj.firstStatement && typeof textObj.text != 'undefined'){
+              textObj.source = block.data[i].source;
+              textObj.category = block.data[i].category;
+              textObj.variable = block.data[i].variable;
+              textObj.type = block.data[i].type;
+              textObj.fips = block.data[i].fips;
+              textObj.data.push(block.data[i].data);
+              textObj.text = textObj.text + ', "' + textObj.fips + '":' + textObj.data[0];
+              textObj.data = [];
+              blockCount = blockCount + 1;
+              // console.log(blockCount);
+              // console.log('G');
+
+            } else if (textObj.multiple && textObj.firstStatement && typeof textObj.text == 'undefined'){
+              textObj.source = block.data[i].source;
+              textObj.category = block.data[i].category;
+              textObj.variable = block.data[i].variable;
+              textObj.type = block.data[i].type;
+              textObj.fips = block.data[i].fips;
+              textObj.data.push(block.data[i].data); 
+              textObj.text = '{"source":"' + textObj.source + '", "variable":"' + textObj.variable + '", "category":"' 
+                + textObj.category + '", "type":"' + textObj.type + '", "data":{"' + textObj.fips + '":' + textObj.data.reduce(function(a,b) {return a+b;})/textObj.data.length;
+              textObj.data = [];
+              textObj.firstStatement = false;
+              textObj.multiple = false;
+              blockCount = blockCount + 1;
+              // console.log('K');
+            }
           }
         }
+
+
       }
+      
+
+
     },
     complete: function() {
       if (variablesCheck){
         return;
       }
 
-      if (text.indexOf("undefined") < 0){
-        text = text.concat('}}');
-        var jsonObj = JSON.parse(text);
+      if (blockCount == 1 && textObj.multiple && !textObj.firstStatement){
+        textObj.text = textObj.text + ', "' + textObj.fips + '":' + textObj.data.reduce(function(a,b) {return a+b;})/textObj.data.length + '}}';
+        // console.log('END');
+        // console.log(textObj.text);
+        var jsonObj = JSON.parse(textObj.text);
+        writeDataToDB(jsonObj, indexedDBname, indexedDBtable); 
+      } else if (!textObj.multiple && !textObj.firstStatement && textObj.source != ""){
+        textObj.text = textObj.text + '}}';
+        // console.log('End 2');
+        // console.log(textObj.text);
+        var jsonObj = JSON.parse(textObj.text);
         writeDataToDB(jsonObj, indexedDBname, indexedDBtable);
-      }
+      } else if (textObj.multiple && textObj.firstStatement) { //for a block with all same fips
+        textObj.text = '{"source":"' + textObj.source + '", "variable":"' + textObj.variable + '", "category":"' 
+                + textObj.category + '", "type":"' + textObj.type + '", "data":{"' + textObj.fips + '":' + textObj.data.reduce(function(a,b) {return a+b;})/textObj.data.length + '}}';
+        // console.log(textObj.text);
+        // console.log('End 3');
+        var jsonObj = JSON.parse(textObj.text);
+        writeDataToDB(jsonObj, indexedDBname, indexedDBtable);
+      } 
 
       var t1 = performance.now();
       console.log("CSV objects: " + (t1-t0) + " milliseconds.");
@@ -98,6 +209,8 @@ function handleFileSelect() {
     }
   })
 };
+
+
 
 
 function checkSpelling(dataObj, varList){
