@@ -3,6 +3,7 @@ $ cat .gitignore
 /maint/DataCompressor/DataAggr/Debug/*
 !/maint/DataCompressor/DataAggr/Debug/processed.json
 /node_modules/*
+npm-debug.log
 
 #Ignore Mac system file
 *.DS_Store
