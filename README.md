@@ -12,8 +12,8 @@ Running the Webapp Locally
 
 1. in a command prompt navigate to the *server/mongodb/bin* folder, and run mongod: `mongod --dbpath ../data`
 
-2. navigate to the root directory of the project in node, and run npm install
+2. navigate to the root directory of the project in node, and run `npm install`
 
-2. once dependencies are finished installing, enter npm start
+2. once dependencies are installed, launch node server: `npm start`
 
-3. navigate to port 3000 using your web browser
+3. navigate to selected address in browser to launch webapp (default is [http://localhost:3000/](http://localhost:3000/))
