@@ -8,12 +8,18 @@ html
     link(rel="stylesheet", href="/stylesheets/dc.css")
     link(rel="stylesheet", href="/stylesheets/jquery.gridster.min.css")
     link(rel="stylesheet", href="/stylesheets/neoboard.css")
+    link(rel="stylesheet", href="/stylesheets/redips-drag-min.css")
     link(rel="stylesheet", href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
     link(rel="stylesheet", href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css")
   body
     block content
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
-    script(src='/javascripts/handler.js')
+    if(mode!="free")
+      script(src='/javascripts/handler.js')
+      script(src='/javascripts/organizevariables.js')
+    else
+      script(src='/javascripts/handler2.js')
+      script(src='/javascripts/organizevariables2.js')
     script(src="/javascripts/jquery.gridster.min.js")
     script(src="/javascripts/d3.js")
     script(src="/javascripts/bootstrap.js")
@@ -22,6 +28,7 @@ html
     script(src="/javascripts/colorbrewer.js")
     script(src="/javascripts/tinycolor.js")
     script(src='/javascripts/customvars.js')
+    script(src='/javascripts/redips-drag-min.js')
     script(src='//cdn.datatables.net/1.10.4/js/jquery.dataTables.js')
     script(src='/javascripts/papaparse.js')
     script(src='/javascripts/fileupload.js')

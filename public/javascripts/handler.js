@@ -1,5 +1,6 @@
 var tiles=[];
 people=[];
+var counter=0;
 var varData=[], superVarData=[];
 sourceDropDown=[{name: '---',value:'',subitems: []},{name: 'Custom',value:'Custom',subitems: []}];
  varUsage={names:[],amounts:[],dataIn:[],dimensions:[], sources:[], bounds:[]};
@@ -16,7 +17,6 @@ var removeMode=false;
 
 //document initialization
 $(document).ready(function(){
-
     $(".gridster ul").gridster({
         widget_margins: [0, 0],
         widget_base_dimensions: [200, 250/3],
@@ -24,7 +24,6 @@ $(document).ready(function(){
     });
 	$("text").css({"color":"white"})
     gridster = $(".gridster ul").gridster().data('gridster');
-	$("#splashpage").modal('show');
     loadData();
 })
 
@@ -240,7 +239,6 @@ function getDimension(dataset, datatype,chart)
 			arg[0]['dimensions'][ind]= cfilter.dimension(function (d) {
 				return d[datast];
 			});
-			
 			finishGen(arg[0]['dimensions'][ind],arg[1], ind, datast)
 		
 		},[variables, chart]);
@@ -301,8 +299,12 @@ function finishGen(dimension, chart, index, dataset)
 		chart.cDimension=dimension;
 		chart.cGroup=chart.cDimension.group().reduce(
 			function reduceAdd(p,v){
+					if(counter<100) console.log(p+' '+v[dataset]);
+					counter++;
 				if(v[dataset]!=-999)
-					return p+1000;
+				{
+					return p+1000; 
+				}
 				return p;
 			},
 			function reduceRemove(p,v){
@@ -561,22 +563,31 @@ function addData(datatype, dataset, data)
  	for(var person in people)
 	{
 		var fipcode=people[person].fip;
-		if(datatype=='super')
+		if(typeof(data[fipcode])=='undefined')
 		{
-			var distribution=data[fipcode];
-			var key=Math.random();
-			var index=0;
-			while(key>distribution[index])
-			{
-				index++;
-			}
-			people[person][dataset]=superUsage['dependancies'][findVariable (datatype, dataset)][index];
+				if(datatype!='super')
+					people[person][dataset]= -999;
+				else	
+					people[person][dataset]= 'Unspecified';
 		}
 		else
 		{
-			people[person][dataset]=data[fipcode];
+			if(datatype=='super')
+			{
+				var distribution=data[fipcode];
+				var key=Math.random();
+				var index=0;
+				while(key>distribution[index])
+				{
+					index++;
+				}
+				people[person][dataset]=superUsage['dependancies'][findVariable (datatype, dataset)][index];
+			}
+			else
+			{
+				people[person][dataset]=data[fipcode];
+			}
 		}
-		
 	} 
 }
 
@@ -657,7 +668,7 @@ function pieGen(dataset, idcode, colorKey)
         .label(function (d) {
             if (chart.hasFilter() && !chart.hasFilter(d.key))
                 return d.key + "(0%)";
-            return d.key.split("_").join(' ') + "(" + Math.floor(d.value / all.value()/10) + "%)";
+            return String(d.key).split("_").join(' ') + "(" + Math.floor(d.value / all.value()/10) + "%)";
         });
 	getDimension(dataset, 'super',chart) 
 	return chart;
@@ -682,7 +693,7 @@ function barGen(dataset, idcode, colorKey)
         .ordinalColors(colorKey)
         .margins({top: 20, left: 10, right: 10, bottom: 20})
         .label(function (d) {
-            return d.key.split("_").join(' ');
+            return String(d.key).split("_").join(' ');
         })
         // title sets the row text
         .title(function (d) {
@@ -1041,6 +1052,8 @@ function loadData()
 		}
         endLoad();
     })
+	
+	//load qualitative variables
     $.getJSON('users/allsuper', function(data){
 		//superUsage={names:[],amounts:[], dimensions:[], dependancies:[]};
 		for(var j in data)
@@ -1417,6 +1430,10 @@ function endLoad()
 			$(this).css({"background-image":"-webkit-linear-gradient(top, #757c82, #757882)"})
 		})
 		$(this).css({"background-image":"-webkit-linear-gradient(top, #222222, #777777)"})
+	})
+	$('#opensortbox').click(function(){
+		$('#customdata').modal('hide');
+		handleFileSelect();
 	})
 	sortDropdown();
 }

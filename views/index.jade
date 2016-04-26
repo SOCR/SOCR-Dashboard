@@ -60,8 +60,9 @@ block content
                 .modal-header
                     h4.modal-title Select Chart Type
                 .modal-body
-                    button.btn.btn-primary.chart-button#geo(type="button", style="padding:0px;margin:10px")
-                        img(src="images/geo.png",style="width:100px")
+                    if(mode!='free')
+                        button.btn.btn-primary.chart-button#geo(type="button", style="padding:0px;margin:10px")
+                            img(src="images/geo.png",style="width:100px")
                     button.btn.btn-primary.chart-button#hist(type="button", style="padding:0px;margin:10px")
                         img(src="images/hist.png",style="width:100px")
                     button.btn.btn-primary.chart-button#scatter(type="button", style="padding:0px;margin:10px")
@@ -315,8 +316,7 @@ block content
                             i.fa.fa-download.fa-5x
                             br
                             p Export
-                li#import(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#e07902;text-align: center;font-size:21px;color:#ffab22",href="#",role="button",data-toggle="modal")
-                    input#fileElem(type="file", name="files", multiple="", onchange="handleFileSelect()")
+                li#import(data-row="1",data-col="1",data-sizex="1",data-sizey="2", style="background-color:#4474B8;text-align: center;font-size:21px;color:#7FB0F5",href="#customdata",role="button",data-toggle="modal")
                     br
                     i.fa.fa-upload.fa-5x
                     p Import
@@ -403,3 +403,46 @@ block content
                 .modal-footer
                     button.btn.btn-default(type="button" data-dismiss="modal") Close
                     button.btn.btn-primary#startcreate(type="button") Add
+    .modal.hide.fade#customdata(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Custom Dataset
+                .modal-body
+                    input#fileElem(type="file", name="files", multiple="")
+                    br
+                    h5 Enter Source Name
+                    input#sourcebox(type="text")
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Close
+                    button.btn.btn-primary#opensortbox(type="button") Continue
+    .modal.hide.fade#sortvariablesbox(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Custom Dataset
+                .modal-body
+                    div#redips-drag
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal") Close
+                    button.btn.btn-primary#startimport(type="button") Import
+    .modal.hide.fade#cohortselector(tabindex="-1")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
+                    h4.modal-title Cohort Variable Properties
+                .modal-body
+                    div Cohort variable name:            
+                        input#cohortname(type="text")
+                    div Minimum cohort variable value:      
+                        input#cohortmin(type="text")
+                    div Maximum cohort variable value:      
+                        input#cohortmax(type="text")
+                    div Number of Bins:      
+                        input#numbins(type="text")
+                .modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") Close
+                    button.btn.btn-primary#startdashboard(type="button") Start

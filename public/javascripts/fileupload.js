@@ -1,4 +1,5 @@
 
+
 // Uploading file and Parse 
 function handleFileSelect() {
 
@@ -11,7 +12,7 @@ function handleFileSelect() {
   if (!window.indexedDB) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
   } else {
-      var request = indexedDB.open(indexedDBname);
+      var request = indexedDB.open(indexedDBname,2);
       request.onerror = function(event) {
         alert("Database error: " + event.target.errorCode);
       };
@@ -40,6 +41,8 @@ function handleFileSelect() {
         var transaction = db.transaction([indexedDBtable], "readwrite");
         var objStoreTable = transaction.objectStore(indexedDBtable);
 
+		objStoreTable.clear();
+		
         // console.log(block);
 
         //write header and datatype to db
@@ -57,6 +60,7 @@ function handleFileSelect() {
       },
       complete: function() {
         console.log("All done");
+		getVariablesList();
         // getOneValue(indexedDBname, indexedDBtable, 8);
 
         // var t1 = performance.now();
@@ -97,8 +101,9 @@ function getValue(databaseName, databaseTable){
     cursorRequest.onsuccess = function (event) {
       var curCursor = event.target.result;
       if (curCursor) {
-        var value = curCursor.value.variable;
-        alert(value);
+        var value = curCursor.value;
+        console.log(value);
+		console.log(123);
         curCursor.continue();
       }
     }
@@ -110,12 +115,3 @@ function getValue(databaseName, databaseTable){
 
 // // Delete Database 
 // window.indexedDB.deleteDatabase("DataStorage");
-
-
-
-
-
-
-
-
-
