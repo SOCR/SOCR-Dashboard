@@ -17,7 +17,7 @@
 10 error You can get their info via:
 10 error     npm owner ls DashBack
 10 error There is likely additional logging output above.
-11 error System Darwin 14.0.0
+11 error System Darwin 14.1.0
 12 error command "node" "/usr/local/bin/npm" "start"
 13 error cwd /Users/avtruong/socr/Dashboard-Lab
 14 error node -v v0.10.32
