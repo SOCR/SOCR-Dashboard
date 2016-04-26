@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Session Name="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataCompressor.workspace">
-  <int Value="0" Name="m_selectedTab"/>
-  <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataCompressor.workspace" Name="m_workspaceName"/>
+<Session Name="C:\Users\shusa_000\Documents\GitHub\Dashboard-Lab\maint\DataCompressor\DataCompressor.workspace">
+  <int Value="1" Name="m_selectedTab"/>
+  <wxString Value="C:\Users\shusa_000\Documents\GitHub\Dashboard-Lab\maint\DataCompressor\DataCompressor.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\main.cpp" Name="FileName"/>
-      <int Value="50" Name="FirstVisibleLine"/>
-      <int Value="57" Name="CurrentLine"/>
+      <int Value="214" Name="FirstVisibleLine"/>
+      <int Value="174" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
+      <IntVector Name="CollapsedFolds">
+        <IntVectorItem Value="174"/>
+        <IntVectorItem Value="598"/>
+        <IntVectorItem Value="625"/>
+        <IntVectorItem Value="668"/>
+        <IntVectorItem Value="764"/>
+      </IntVector>
     </TabInfo>
     <TabInfo>
       <wxString Value="C:\Users\shusa_000\Documents\GitHub\DashBack\maint\DataCompressor\DataAggr\Debug\processed.json" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="296" Name="FirstVisibleLine"/>
       <int Value="10" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>

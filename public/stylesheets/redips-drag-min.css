@@ -1,0 +1,95 @@
+/*
+Darko Bunic
+http://www.redips.net/
+Jan, 2010.
+*/
+
+
+
+/* add bottom margin between tables */
+#table1,#table2 {
+	margin-bottom: 20px;
+}
+
+/* drag container (contains two tables) */
+#redips-drag {
+	margin: auto;
+	width: 430px;
+}
+
+/* drag objects (DIV inside table cells) */
+.redips-drag {
+	position: relative;
+	cursor: move;
+	margin: 2px auto;
+	z-index: 10;
+	background-color: #f0f0f0;
+	text-align: left;
+	padding: 5px;
+	font-size: 12px;
+	/* round corners for FF, Chrome, Safari (except IE) */
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	/* shadow for FF, Chrome, Safari (except IE)*/
+	/*
+	-moz-box-shadow: 4px 4px 8px #444;
+	-webkit-box-shadow: 4px 4px 8px #444;
+	box-shadow: 4px 4px 8px #444;
+	*/
+}
+
+/* drag objects border for the first table */
+.t1 {
+	border: 1px solid #9B9EA2;;
+}
+
+/* tables */
+div#redips-drag table {
+	background-color: #e0e0e0;
+	border-collapse: collapse;
+	margin:15px;
+	display:inline-table;
+}
+
+/* table cells */
+div#redips-drag td {
+	height: 50px;
+	border: 1px solid white;
+	text-align: center;
+	font-size: 12px;
+	padding: 2px;
+	width:150px;
+}
+
+div#redips-drag input {
+	width:130px;
+	margin:0px;
+	display:inline;
+	padding:0px;
+	background-color:gray;
+	color:white;
+	font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 12px;
+	position:center;
+}
+
+input::-webkit-input-placeholder {
+	color: white;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    white;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    white;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color:    white;
+}
+/* message cell (marked as forbidden) */
+.redips-mark {
+	color: white;
+	background-color: gray;
+}

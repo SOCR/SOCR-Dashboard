@@ -1,0 +1,86 @@
+.gridster
+{
+	color:#ffffff;
+}
+.widget
+{
+padding-left:10px;
+padding-top:5px
+}
+
+.thinwidg
+{
+padding-left:10px;
+}
+body{
+	background-color:#222222;
+	color:#aaaaaa;
+}
+
+text
+{
+color:#aaaaaa
+}
+
+.y.axis
+{
+display:none
+}
+
+.x.axis text
+{
+fill:white;
+
+}
+.box text
+{
+fill:white;
+
+}
+
+.whisker text
+{
+fill:white;
+
+}
+
+.scatter .y.axis
+{
+	display:inline;
+	fill:white;
+}
+
+.scatter text
+{
+	fill:white;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-weight: bold
+}
+
+#splashpage .modal-body
+{
+	font-weight:bold;
+}
+
+#splashpage
+{
+	width:350px;
+}
+
+a
+{
+	color:#c929ff
+}
+
+a:hover
+{
+	color:#c929ff;
+	text-decoration:none;
+}
+
+.div-count
+{
+	font-size:60px;
+	margin-top:40px;
+	margin-left:10px;
+}

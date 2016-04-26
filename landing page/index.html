@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>SOCR Analytics Dashboard</title>
+		<!--link(rel="stylesheet", href="/stylesheets/bootstrapdef.min.css")-->
+		<link rel="stylesheet" href="./stylesheets/bootstrapslate.min.css">
+		<link rel="stylesheet" href="./stylesheets/dc.css">
+		<link rel="stylesheet" href="./stylesheets/jquery.gridster.min.css">
+		<link rel="stylesheet" href="./stylesheets/neoboard.css">
+	</head>
+	<body>
+		<div style="position:fixed;bottom:0px;right:2px;font-size:10px">
+			<p>Version 1.1</p>
+		</div>
+		<div id="splashpage" tabindex="-1" class="modal hide fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+						<h4 class="modal-title">SOCR Analytics Dashboard</h4>
+					</div>
+					<div class="modal-body">
+						<p>Welcome to the SOCR Analytics Dashboard. If this is your first time here, please click the "Help" tile for assistance. 
+							<br>
+							<br> 
+							Please not that this webapp requires an HTML5 and Javascript compatible browser, and will not run on Internet Explorer. You can find a more suitable alternative below
+							<br>
+							<br>
+							<a type="button" style="padding:0px;margin:10px" href="https://www.google.com/chrome/browser/" class="btn btn-primary">
+								<img src="images/chrome.png" style="width:75px">
+							</a>
+							<a type="button" style="padding:0px;margin:10px" href="https://www.mozilla.org/firefox/" class="btn btn-primary">
+								<img src="images/firefox.png" style="width:75px">
+							</a>
+							<a type="button" style="padding:0px;margin:10px" href="https://www.apple.com/safari/" class="btn btn-primary">
+								<img src="images/safari.png" style="width:75px">
+							</a>
+						</p>
+					</div>
+					<div class="modal-footer">
+						<a href="http://socr-dev.nursing.umich.edu:8080/new">
+						<button type="button"  class="btn btn-default">
+							Free-Anchored 
+						</button>
+						</a>
+						<a href="http://socr-dev.nursing.umich.edu:8080">
+						<button type="button"  class="btn btn-default">
+							Location-Anchored 
+						</button>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="./javascripts/handler.js"></script>
+		<script src="./javascripts/organizevariables.js"></script>
+		<script src="./javascripts/d3.js"></script>
+		<script src="./javascripts/bootstrap.js"></script>
+	</body>
+</html>
