@@ -338,11 +338,10 @@ function addQual(index)
 	}
 }
 
-function getVariablesList()
+function getVariablesList(databaseTable)
 {
 
 	var databaseName = "DataStorage";
-	var databaseTable = "DataTable";
 	
 	var request = indexedDB.open(databaseName);
 	request.onerror = function(event) {

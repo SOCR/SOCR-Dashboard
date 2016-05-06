@@ -65,7 +65,12 @@ function handleFileSelect(fileList) {
 	    //select appropriate parser
 		var extension=getExtension(toParse[j].name)
 		var functionString = "parse"+extension.toUpperCase();
-		window[functionString](toParse[j], objStoreTable);
+		var callback = function(curTable){
+			return function(){
+			getVariablesList(curTable);
+			}
+		}(indexedDBtable);
+		window[functionString](toParse[j], objStoreTable, callback);
 		
 	  };
   }

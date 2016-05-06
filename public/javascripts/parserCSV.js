@@ -26,7 +26,8 @@ function parseCSV(file, table, callback)
 	  },
 	  complete: function() {
 		console.log("All done");
-		getVariablesList();
+		//getVariablesList();
+		callback();
 
 	  }
 	});
