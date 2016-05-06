@@ -16,11 +16,12 @@ function handleFileSelect(fileList) {
   var indexedDBname = "DataStorage";
   var indexedDBtable = "DataTable";
   var curDBVersion = 2;
-  
-  for(var j in fileList)
+  var toParse = [];
+  for(var j=0;j<fileList.length;j++)
   {
-	var extension=getExtesnion(fileList[j].name)
-	window["preparse"+extension.toUpperCase()](fileList[j]);
+	var extension=getExtension(fileList[j].name)
+	var functionString = "preparse"+extension.toUpperCase();
+	window[functionString](fileList[j], toParse);
   }
   if (!window.indexedDB) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
