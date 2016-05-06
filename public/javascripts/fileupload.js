@@ -8,7 +8,7 @@ var getExtension = function(fileName)
 }
 
 // Uploading file and Parse 
-function handleFileSelect(inputFiles) {
+function handleFileSelect(fileList) {
 
   // var t0 = performance.now();
 
@@ -16,11 +16,11 @@ function handleFileSelect(inputFiles) {
   var indexedDBname = "DataStorage";
   var indexedDBtable = "DataTable";
   var curDBVersion = 2;
-  var fileList = inputFiles.slice();
   
   for(var j in fileList)
   {
 	var extension=getExtesnion(fileList[j].name)
+	window["preparse"+extension.toUpperCase()](fileList[j]);
   }
   if (!window.indexedDB) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
