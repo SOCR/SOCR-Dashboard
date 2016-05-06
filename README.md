@@ -1,6 +1,6 @@
 SOCR Analytics Dashboard
 =============
-The SOCR Analytics Dashboard is an integrated Big-Data analytics suite designed for wab based merging, integration, and analysis of large, heterogenous datasets. The package features a non-relational databse for storage and integration of heterogenous datasets, a javascript-based web server built using node.js, and a sleek front-end for visualization and real-time manipulation of data.
+The SOCR Analytics Dashboard is an integrated Big-Data analytics suite designed for web based merging, integration, and analysis of large, incongruent datasets. The package features a non-relational database for storage and integration of heterogeneous datasets, a JavaScript-based web server built using node.js, and a sleek front-end for visualization and real-time manipulation of data.
 
 Sample Demo:
 
