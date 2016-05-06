@@ -2,7 +2,7 @@
 var headerused=false;
 var numBoxes=0;
 var sourceName;
-function organizeVariables(variablesList)
+function organizeVariables(variablesList, fileIndex)
 {
 	$('#redips-drag').html('<table><tr><td class="redips-mark">Uncategorized</td></tr><tr><td class="first-box"></td></tr></table>');
 	
@@ -338,11 +338,11 @@ function addQual(index)
 	}
 }
 
-function getVariablesList(databaseTable)
+function getVariablesList(fileIndex)
 {
 
 	var databaseName = "DataStorage";
-	
+	var databaseTable = "DataTable"+fileIndex;
 	var request = indexedDB.open(databaseName);
 	request.onerror = function(event) {
 		console.log("Database error: " + event.target.errorCode);
@@ -352,7 +352,7 @@ function getVariablesList(databaseTable)
 		var db = event.target.result;
 		var objStore = db.transaction(databaseTable).objectStore(databaseTable);
 		var cursorRequest = objStore.openCursor();
-		cursorRequest.onsuccess = function (event) {
+		cursorRequest.onsuccess = function(index){return function (event) {
 			var curCursor = event.target.result;
 			if (curCursor) 
 			{
@@ -365,9 +365,9 @@ function getVariablesList(databaseTable)
 					headerList.push(k)
 				}
 				
-				organizeVariables(headerList);
+				organizeVariables(headerList, index);
 			}
-		}
+		}}(fileIndex)
 		cursorRequest.onerror = function (event) {
 		  console.log("Database error: " + event.target.errorCode);
 		}

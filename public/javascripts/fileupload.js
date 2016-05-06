@@ -69,7 +69,7 @@ function handleFileSelect(fileList) {
 			return function(){
 			getVariablesList(curTable);
 			}
-		}(indexedDBtable);
+		}(j);
 		window[functionString](toParse[j], objStoreTable, callback);
 		
 	  };
