@@ -45,55 +45,57 @@ function handleFileSelect(fileList) {
 		var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
 	  };  
 	  
-  }
-
-  //open transaction and write data to indexedDB
-  var openRequest = indexedDB.open(indexedDBname);
-  openRequest.onerror = function(event) {
-    alert("Database error: " + event.target.errorCode);
-    };
-  openRequest.onsuccess = function(event){
-    
-    var fileInput = document.getElementById("fileElem");
-	console.log('!!!!!!!!!!!!!!!!!!!!!!')
-	console.log(fileInput.files);
-    var results = Papa.parse(fileInput.files[0], {
-      header: true,
-      dynamicTyping: true,
-      chunk: function(block){
-
-        var db = event.target.result;
-        var transaction = db.transaction([indexedDBtable], "readwrite");
-        var objStoreTable = transaction.objectStore(indexedDBtable);
-
-		objStoreTable.clear();
+	  //open transaction for writing
+	  var openRequest = indexedDB.open(indexedDBname);
+	  
+	  //error opening transaction
+	  openRequest.onerror = function(event) {
+		alert("Database error: " + event.target.errorCode);
+		};
 		
-        // console.log(block);
+	  openRequest.onsuccess = function(event){
+		
+		var fileInput = document.getElementById("fileElem");
+		console.log('!!!!!!!!!!!!!!!!!!!!!!')
+		console.log(fileInput.files);
+		var results = Papa.parse(fileInput.files[0], {
+		  header: true,
+		  dynamicTyping: true,
+		  chunk: function(block){
 
-        //write header and datatype to db
-        var header = {};
-        for (i=0; i < block.meta.fields.length; i++){
-          header[block.meta.fields[i]] = typeof block.data[0][block.meta.fields[i]];
-        }
-        // console.log(header);
-        objStoreTable.add(header);
+			var db = event.target.result;
+			var transaction = db.transaction([indexedDBtable], "readwrite");
+			var objStoreTable = transaction.objectStore(indexedDBtable);
 
-        //write each data object to db
-        for (i=0; i < block.data.length; i++){
-          objStoreTable.add(block.data[i]);
-        }
-      },
-      complete: function() {
-        console.log("All done");
-		getVariablesList();
-        // getOneValue(indexedDBname, indexedDBtable, 8);
+			objStoreTable.clear();
+			
+			// console.log(block);
 
-        // var t1 = performance.now();
-        // console.log((t1-t0) + " ms" );
+			//write header and datatype to db
+			var header = {};
+			for (i=0; i < block.meta.fields.length; i++){
+			  header[block.meta.fields[i]] = typeof block.data[0][block.meta.fields[i]];
+			}
+			// console.log(header);
+			objStoreTable.add(header);
 
-      }
-    });
-  };
+			//write each data object to db
+			for (i=0; i < block.data.length; i++){
+			  objStoreTable.add(block.data[i]);
+			}
+		  },
+		  complete: function() {
+			console.log("All done");
+			getVariablesList();
+			// getOneValue(indexedDBname, indexedDBtable, 8);
+
+			// var t1 = performance.now();
+			// console.log((t1-t0) + " ms" );
+
+		  }
+		});
+	  };
+  }
 };
 
 
