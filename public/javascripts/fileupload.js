@@ -1,17 +1,32 @@
 
+//returns extension of a given filename
+var getExtension = function(fileName)
+{
+	var re = /(?:\.([^.]+))?$/;
+	var ext = re.exec(fileName)[1];
+	return ext;
+}
 
 // Uploading file and Parse 
-function handleFileSelect() {
+function handleFileSelect(inputFiles) {
 
   // var t0 = performance.now();
 
   //open and create database and table
   var indexedDBname = "DataStorage";
   var indexedDBtable = "DataTable";
-
+  var curDBVersion = 2;
+  var fileList = inputFiles.slice();
+  
+  for(var j in fileList)
+  {
+	var extension=getExtesnion(fileList[j].name)
+  }
   if (!window.indexedDB) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
-  } else {
+  } 
+  else 
+  {
       var request = indexedDB.open(indexedDBname,2);
       request.onerror = function(event) {
         alert("Database error: " + event.target.errorCode);
@@ -31,7 +46,8 @@ function handleFileSelect() {
   openRequest.onsuccess = function(event){
     
     var fileInput = document.getElementById("fileElem");
-
+	console.log('!!!!!!!!!!!!!!!!!!!!!!')
+	console.log(fileInput.files);
     var results = Papa.parse(fileInput.files[0], {
       header: true,
       dynamicTyping: true,
