@@ -23,21 +23,22 @@ function handleFileSelect(fileList) {
 	var functionString = "preparse"+extension.toUpperCase();
 	window[functionString](fileList[j], toParse);
   }
+  
+  //check for indexedDB support
   if (!window.indexedDB) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
+	  return;
   } 
-  else 
-  {
-      var request = indexedDB.open(indexedDBname,2);
-      request.onerror = function(event) {
-        alert("Database error: " + event.target.errorCode);
-      };
-      request.onupgradeneeded = function(event) {
-        var db = event.target.result;
-        // Create another object store called "DataTable" with the autoIncrement flag set as true.    
-        var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
-      };  
+  
+  var request = indexedDB.open(indexedDBname,2);
+  request.onerror = function(event) {
+	alert("Database error: " + event.target.errorCode);
   };
+  request.onupgradeneeded = function(event) {
+	var db = event.target.result;
+	// Create another object store called "DataTable" with the autoIncrement flag set as true.    
+	var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
+  };  
 
   //open transaction and write data to indexedDB
   var openRequest = indexedDB.open(indexedDBname);
