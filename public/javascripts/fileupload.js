@@ -53,21 +53,26 @@ function handleFileSelect(fileList) {
 		alert("Database error: " + event.target.errorCode);
 		};
 		
+	  //begin parsing frame
 	  openRequest.onsuccess = function(event){
+	  
+		//open and clear correct table
+		var db = event.target.result;
+		var transaction = db.transaction([indexedDBtable], "readwrite");
+		var objStoreTable = transaction.objectStore(indexedDBtable);
+		objStoreTable.clear();
 		
-		var fileInput = document.getElementById("fileElem");
-		console.log('!!!!!!!!!!!!!!!!!!!!!!')
-		console.log(fileInput.files);
+	    //select appropriate parser
+		var extension=getExtension(toParse[j].name)
+		var functionString = "parse"+extension.toUpperCase();
+		window[functionString](toParse[j], objStoreTable);
+		
 		var results = Papa.parse(fileInput.files[0], {
 		  header: true,
 		  dynamicTyping: true,
 		  chunk: function(block){
 
-			var db = event.target.result;
-			var transaction = db.transaction([indexedDBtable], "readwrite");
-			var objStoreTable = transaction.objectStore(indexedDBtable);
 
-			objStoreTable.clear();
 			
 			// console.log(block);
 
