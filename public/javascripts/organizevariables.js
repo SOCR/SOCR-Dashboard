@@ -4,11 +4,11 @@ var numBoxes=0;
 var sourceName;
 function organizeVariables(variablesList, fileIndex, curFileName)
 {
-	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark"><input type="text" value="'++'"></td></tr><tr><td class="first-box"></td></tr></table>');
+	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark"><input type="text" value="'+curFileName+'"></td></tr><tr><td class="first-box"></td></tr></table>');
 	
 	for (var j in variablesList)
 	{
-		$('.first-box').append('<div class="redips-drag" id="dragvariable'+j+'">'+variablesList[j]+'</div>');
+		$('.fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragvariable'+j+'">'+variablesList[j]+'</div>');
 	}
 	
 	$('#redips-drag').append('<div class="addbox-divider"></div>');
