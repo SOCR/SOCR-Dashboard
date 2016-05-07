@@ -4,7 +4,7 @@ var numBoxes=0;
 var sourceName;
 function organizeVariables(variablesList, fileIndex)
 {
-	$('#redips-drag').html('<table><tr><td class="redips-mark">Uncategorized</td></tr><tr><td class="first-box"></td></tr></table>');
+	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark">Uncategorized</td></tr><tr><td class="first-box"></td></tr></table>');
 	
 	for (var j in variablesList)
 	{
@@ -223,9 +223,12 @@ function addQuant(datasetNames)
 //Adds qualitative variables (Custom Boxes) to dataset
 function addQual(index)
 {
+	
+	//finalizes import
 	if(index==numBoxes)
 	{
 		$('#sortvariablesbox').modal('hide');
+		$('#redips-drag').empty();
 		return;
 	}
 	
