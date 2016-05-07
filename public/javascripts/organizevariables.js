@@ -2,9 +2,9 @@
 var headerused=false;
 var numBoxes=0;
 var sourceName;
-function organizeVariables(variablesList, fileIndex)
+function organizeVariables(variablesList, fileIndex, curFileName)
 {
-	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark">Uncategorized</td></tr><tr><td class="first-box"></td></tr></table>');
+	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark"><input type="text" value="'++'"></td></tr><tr><td class="first-box"></td></tr></table>');
 	
 	for (var j in variablesList)
 	{
@@ -341,7 +341,7 @@ function addQual(index)
 	}
 }
 
-function getVariablesList(fileIndex)
+function getVariablesList(fileIndex, curFileName)
 {
 
 	var databaseName = "DataStorage";
@@ -355,7 +355,7 @@ function getVariablesList(fileIndex)
 		var db = event.target.result;
 		var objStore = db.transaction(databaseTable).objectStore(databaseTable);
 		var cursorRequest = objStore.openCursor();
-		cursorRequest.onsuccess = function(index){return function (event) {
+		cursorRequest.onsuccess = function(index, fileName){return function (event) {
 			var curCursor = event.target.result;
 			if (curCursor) 
 			{
@@ -368,9 +368,9 @@ function getVariablesList(fileIndex)
 					headerList.push(k)
 				}
 				
-				organizeVariables(headerList, index);
+				organizeVariables(headerList, index, fileName);
 			}
-		}}(fileIndex)
+		}}(fileIndex, fileName)
 		cursorRequest.onerror = function (event) {
 		  console.log("Database error: " + event.target.errorCode);
 		}
