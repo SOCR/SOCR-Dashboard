@@ -2,15 +2,21 @@
 var headerused=false;
 var numBoxes=0;
 var sourceName;
+var numFiles = 0;
 function organizeVariables(variablesList, fileIndex, curFileName)
 {
+	if(fileIndex >= numFiles)
+		numFiles=fileIndex+1;
 	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark"><input type="text" value="'+curFileName+'"></td></tr><tr><td class="first-box"></td></tr></table>');
 	
 	for (var j in variablesList)
 	{
 		$('.fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragvariable'+j+'">'+variablesList[j]+'</div>');
 	}
-	
+}
+
+var finalizeVariableImportPage = function ()
+{
 	$('#redips-drag').append('<div class="addbox-divider"></div>');
 	$('#redips-drag').append('<table class="addbox " ><tr><td class= "redips-mark" >ADD</td></tr></table>');
 	$('#redips-drag').append('<table class="deletebox"><tr><td class="redips-trash">DELETE</td></tr></table>');
@@ -23,6 +29,7 @@ function organizeVariables(variablesList, fileIndex, curFileName)
 	})
 	REDIPS.drag.init();
 }
+
 $('#startimport').click(function(){
 	sourceName=$('#sourcebox').val();
 	sourceDropDown.push({name:sourceName.split("_").join(' ').toProperCase(),value: sourceName, subitems:[]})
