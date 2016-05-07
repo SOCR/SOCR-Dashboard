@@ -65,11 +65,11 @@ function handleFileSelect(fileList) {
 	    //select appropriate parser
 		var extension=getExtension(toParse[j].name)
 		var functionString = "parse"+extension.toUpperCase();
-		var callback = function(curTable, curFileName){
+		var callback = function(curTable, curFileName, numFiles){
 			return function(){
-			getVariablesList(curTable, curFileName);
+			getVariablesList(curTable, curFileName, numFiles);
 			}
-		}(j, toParse[j].name);
+		}(j, toParse[j].name, toParse.length);
 		window[functionString](toParse[j], objStoreTable, callback);
 		
 	  };

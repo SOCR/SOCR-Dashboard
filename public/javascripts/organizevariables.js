@@ -3,15 +3,19 @@ var headerused=false;
 var numBoxes=0;
 var sourceName;
 var numFiles = 0;
+var filesProcessed = 0;
 function organizeVariables(variablesList, fileIndex, curFileName)
 {
-	if(fileIndex >= numFiles)
-		numFiles=fileIndex+1;
+	filesProcessed++;
 	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark"><input type="text" value="'+curFileName+'"></td></tr><tr><td class="first-box"></td></tr></table>');
 	
 	for (var j in variablesList)
 	{
 		$('.fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'">'+variablesList[j]+'</div>');
+	}
+	if(filesProcessed==numFiles)
+	{
+		finalizeVariableImportPage();
 	}
 }
 
@@ -348,9 +352,9 @@ function addQual(index)
 	}
 }
 
-function getVariablesList(fileIndex, curFileName)
+function getVariablesList(fileIndex, curFileName, nFiles)
 {
-
+	numFiles = nFiles;
 	var databaseName = "DataStorage";
 	var databaseTable = "DataTable"+fileIndex;
 	var request = indexedDB.open(databaseName);
@@ -377,7 +381,7 @@ function getVariablesList(fileIndex, curFileName)
 				
 				organizeVariables(headerList, index, fileName);
 			}
-		}}(fileIndex, fileName)
+		}}(fileIndex, curFileName)
 		cursorRequest.onerror = function (event) {
 		  console.log("Database error: " + event.target.errorCode);
 		}
