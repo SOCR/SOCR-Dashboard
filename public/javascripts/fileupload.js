@@ -29,6 +29,7 @@ function handleFileSelect(fileList) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
 	  return;
   } 
+   indexedDB.deleteDatabase(indexedDBname);
   for(var j in toParse)
   {
 	  indexedDBtable = "DataTable"+j;
@@ -40,7 +41,7 @@ function handleFileSelect(fileList) {
 	  request.onupgradeneeded = function(event) 
 	  {
 		var db = event.target.result;
-		
+		console.log('creating object store')
 		// Create another object store called "DataTable" with the autoIncrement flag set as true.    
 		var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
 	  };  
@@ -70,7 +71,7 @@ function handleFileSelect(fileList) {
 			getVariablesList(curTable, curFileName, numFiles);
 			}
 		}(j, toParse[j].name, toParse.length);
-		window[functionString](toParse[j], objStoreTable, callback);
+		window[functionString](toParse[j], indexedDBtable, callback, indexedDBname);
 		
 	  };
   }
