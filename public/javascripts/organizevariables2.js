@@ -11,7 +11,7 @@ function organizeVariables(variablesList, fileIndex, curFileName)
 	
 	for (var j in variablesList)
 	{console.log(variablesList[j])
-		$('.fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'">'+variablesList[j]+'</div>');
+		$('#fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'">'+variablesList[j]+'</div>');
 	}
 	if(filesProcessed==numFiles)
 	{

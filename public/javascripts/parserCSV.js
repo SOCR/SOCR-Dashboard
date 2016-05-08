@@ -7,7 +7,7 @@ function preparseCSV(file, array)
 function parseCSV(file, indexedDBtable, callback, indexedDBname)
 {
 	  
-		
+		console.log(indexedDBtable, file.name)
 		Papa.parse(file, {
 		  header: true,
 		  dynamicTyping: true,

@@ -29,22 +29,30 @@ function handleFileSelect(fileList) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
 	  return;
   } 
-   indexedDB.deleteDatabase(indexedDBname);
+  indexedDB.deleteDatabase(indexedDBname);
+  console.log(toParse);
+   
+  //initialize dataTables
+  var request = indexedDB.open(indexedDBname,3);
+  request.onerror = function(event) 
+  {
+	alert("Database error: " + event.target.errorCode);
+  };
+  request.onupgradeneeded = function(event) 
+  {
+	var db = event.target.result;
+	console.log('creating object store')
+	for(var j in toParse)
+	{
+		indexedDBtable = "DataTable"+j;
+		// Create another object store called "DataTable" with the autoIncrement flag set as true.    
+		var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
+	}
+  };  
+   
   for(var j in toParse)
   {
 	  indexedDBtable = "DataTable"+j;
-	  var request = indexedDB.open(indexedDBname,j+2);
-	  request.onerror = function(event) 
-	  {
-		alert("Database error: " + event.target.errorCode);
-	  };
-	  request.onupgradeneeded = function(event) 
-	  {
-		var db = event.target.result;
-		console.log('creating object store')
-		// Create another object store called "DataTable" with the autoIncrement flag set as true.    
-		var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
-	  };  
 	  
 	  //open transaction for writing
 	  var openRequest = indexedDB.open(indexedDBname);
@@ -55,25 +63,26 @@ function handleFileSelect(fileList) {
 		};
 		
 	  //begin parsing frame
-	  openRequest.onsuccess = function(event){
+	  openRequest.onsuccess = function(k, indexedDBtableNew){ return function(event){
 	  
 		//open and clear correct table
 		var db = event.target.result;
-		var transaction = db.transaction([indexedDBtable], "readwrite");
-		var objStoreTable = transaction.objectStore(indexedDBtable);
+		var transaction = db.transaction([indexedDBtableNew], "readwrite");
+		var objStoreTable = transaction.objectStore(indexedDBtableNew);
 		objStoreTable.clear();
 		
 	    //select appropriate parser
-		var extension=getExtension(toParse[j].name)
+		var extension=getExtension(toParse[k].name)
 		var functionString = "parse"+extension.toUpperCase();
 		var callback = function(curTable, curFileName, numFiles){
 			return function(){
 			getVariablesList(curTable, curFileName, numFiles);
 			}
-		}(j, toParse[j].name, toParse.length);
-		window[functionString](toParse[j], indexedDBtable, callback, indexedDBname);
+		}(k, toParse[k].name, toParse.length);
+		console.log(toParse[k].name)
+		window[functionString](toParse[k], indexedDBtableNew, callback, indexedDBname);
 		
-	  };
+	  }}(j, indexedDBtable);
   }
 };
 
