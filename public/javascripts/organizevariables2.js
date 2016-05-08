@@ -2,15 +2,25 @@
 var headerused=false;
 var numBoxes=0;
 var sourceName;
-function organizeVariables(variablesList)
+var numFiles = 0;
+var filesProcessed = 0;
+function organizeVariables(variablesList, fileIndex, curFileName)
 {
-	$('#redips-drag').html('<table><tr><td class="redips-mark">Uncategorized</td></tr><tr><td class="first-box"></td></tr></table>');
+	filesProcessed++;
+	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark"><input type="text" value="'+curFileName+'"></td></tr><tr><td class="first-box"></td></tr></table>');
 	
 	for (var j in variablesList)
-	{
-		$('.first-box').append('<div class="redips-drag" id="dragvariable'+j+'">'+variablesList[j]+'</div>');
+	{console.log(variablesList[j])
+		$('.fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'">'+variablesList[j]+'</div>');
 	}
-	
+	if(filesProcessed==numFiles)
+	{
+		finalizeVariableImportPage();
+	}
+}
+
+var finalizeVariableImportPage = function ()
+{
 	$('#redips-drag').append('<div class="addbox-divider"></div>');
 	$('#redips-drag').append('<table class="addbox " ><tr><td class= "redips-mark" >ADD</td></tr></table>');
 	$('#redips-drag').append('<table class="deletebox"><tr><td class="redips-trash">DELETE</td></tr></table>');
@@ -226,6 +236,7 @@ function addQual(index)
 	if(index==numBoxes)
 	{
 		$('#sortvariablesbox').modal('hide');
+		$('#redips-drag').empty();
 		return;
 	}
 	
@@ -337,13 +348,11 @@ function addQual(index)
 		}
 	}
 }
-
-function getVariablesList()
+function getVariablesList(fileIndex, curFileName, nFiles)
 {
-
+	numFiles = nFiles;
 	var databaseName = "DataStorage";
-	var databaseTable = "DataTable";
-	
+	var databaseTable = "DataTable"+fileIndex;
 	var request = indexedDB.open(databaseName);
 	request.onerror = function(event) {
 		console.log("Database error: " + event.target.errorCode);
@@ -353,7 +362,7 @@ function getVariablesList()
 		var db = event.target.result;
 		var objStore = db.transaction(databaseTable).objectStore(databaseTable);
 		var cursorRequest = objStore.openCursor();
-		cursorRequest.onsuccess = function (event) {
+		cursorRequest.onsuccess = function(index, fileName){return function (event) {
 			var curCursor = event.target.result;
 			if (curCursor) 
 			{
@@ -366,9 +375,9 @@ function getVariablesList()
 					headerList.push(k)
 				}
 				
-				organizeVariables(headerList);
+				organizeVariables(headerList, index, fileName);
 			}
-		}
+		}}(fileIndex, curFileName)
 		cursorRequest.onerror = function (event) {
 		  console.log("Database error: " + event.target.errorCode);
 		}
