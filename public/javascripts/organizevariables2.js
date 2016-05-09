@@ -206,7 +206,7 @@ function addQuant(datasetNames, dataTableIndex, fileSourceName)
 						superUsage.dimensions.push({});
 						superUsage.dependancies.push(qualVars[j].names);
 						superUsage.sources.push(fileSourceName);
-						sourceDropDown[sourceDropDown.length-1].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'qual',value:dataname })
+						sourceDropDown[sourceDropDown.length-numFiles+dataTableIndex].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'qual',value:dataname })
 						addData('super', dataname, qualVars[j].data)
 						
 					}
@@ -221,7 +221,7 @@ function addQuant(datasetNames, dataTableIndex, fileSourceName)
 						varUsage.dimensions.push({});
 						varUsage.sources.push(fileSourceName)
 						varUsage.bounds.push(boundsData[j]);
-						sourceDropDown[sourceDropDown.length-1].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'quant',value:dataname })
+						sourceDropDown[sourceDropDown.length-numFiles+dataTableIndex].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'quant',value:dataname })
 						
 					}
 				}
