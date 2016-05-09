@@ -1,5 +1,4 @@
 
-var headerused=false;
 var numBoxes=0;
 var sourceName;
 var numFiles = 0;
@@ -21,6 +20,7 @@ function organizeVariables(variablesList, fileIndex, curFileName)
 
 var finalizeVariableImportPage = function ()
 {
+	filesProcessed = 0;
 	$('#redips-drag').append('<div class="addbox-divider"></div>');
 	$('#redips-drag').append('<table class="addbox " ><tr><td class= "redips-mark" >ADD</td></tr></table>');
 	$('#redips-drag').append('<table class="deletebox"><tr><td class="redips-trash">DELETE</td></tr></table>');
@@ -45,10 +45,10 @@ $('#startimport').click(function(){
 			quantVars.push($(this).text())
 		})
 		if(quantVars.length>0)
-			addQuant(quantVars, j)
+			addQuant(quantVars, j, sourceName)
 	}
 })
-function addQuant(datasetNames, dataTableIndex)
+function addQuant(datasetNames, dataTableIndex, fileSourceName)
 {
 	var databaseName = "DataStorage";
 	var databaseTable = "DataTable"+dataTableIndex;
@@ -66,7 +66,7 @@ function addQuant(datasetNames, dataTableIndex)
 		console.log("Database error: " + event.target.errorCode);
 	};
 	request.onsuccess = function(event){
-		headerused=true;
+		var headerused=true;
 		var db = event.target.result;
 		var objStore = db.transaction(databaseTable).objectStore(databaseTable);
 		var cursorRequest = objStore.openCursor();
@@ -166,13 +166,13 @@ function addQuant(datasetNames, dataTableIndex)
 			
 			//finalize import
 			else
-			{
+			{console.log('AAAAAAAABBBBBBBBB', importedData)
 				for(var j in importedData)
 				{
 					var dataname=j;
 					while(findVariable('super', dataname)>-1 || findVariable('var', dataname)>-1 )
 					{
-						dataname+='a'
+						dataname+='\0'
 					}
 					
 					//qualitative variable import
@@ -205,7 +205,7 @@ function addQuant(datasetNames, dataTableIndex)
 						superUsage.dataIn.push(true);
 						superUsage.dimensions.push({});
 						superUsage.dependancies.push(qualVars[j].names);
-						superUsage.sources.push(sourceName);
+						superUsage.sources.push(fileSourceName);
 						sourceDropDown[sourceDropDown.length-1].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'qual',value:dataname })
 						addData('super', dataname, qualVars[j].data)
 						
@@ -213,13 +213,13 @@ function addQuant(datasetNames, dataTableIndex)
 					
 					//quantitative variable import
 					else if(j!='numUsed')
-					{
+					{console.log(j)
 						addData('var', dataname, importedData[j])
 						varUsage.names.push(dataname)
 						varUsage.amounts.push(0);
 						varUsage.dataIn.push(true);
 						varUsage.dimensions.push({});
-						varUsage.sources.push(sourceName)
+						varUsage.sources.push(fileSourceName)
 						varUsage.bounds.push(boundsData[j]);
 						sourceDropDown[sourceDropDown.length-1].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'quant',value:dataname })
 						
@@ -241,6 +241,7 @@ function addQual(index)
 	{
 		$('#sortvariablesbox').modal('hide');
 		$('#redips-drag').empty();
+		numBoxes = 0;
 		return;
 	}
 	
@@ -321,7 +322,7 @@ function addQual(index)
 				var dataname=variableName;
 				while(findVariable('super', dataname)>-1 || findVariable('var', dataname)>-1 )
 				{
-					dataname+='a'
+					dataname+='\0'
 				}
 				for(var j in importedData.data)
 				{
