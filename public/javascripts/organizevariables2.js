@@ -38,21 +38,20 @@ $('#startimport').click(function(){
 	//loops through each file
 	for(var j=0;j<numFiles;j++)
 	{
-		sourceName=$('#fileTable'+fileIndex+' input').val();
+		sourceName=$('#fileTable'+j+' input').val();
 		sourceDropDown.push({name:sourceName.split("_").join(' ').split(".").join(' ').toProperCase(),value: sourceName, subitems:[]})
 		var quantVars=[];
-		$('#fileTable'+fileIndex+' .first-box').each(function(){
+		$('#fileTable'+j+' .first-box div').each(function(){
 			quantVars.push($(this).text())
 		})
-		
 		if(quantVars.length>0)
 			addQuant(quantVars, j)
 	}
 })
-function addQuant(datasetNames)
+function addQuant(datasetNames, dataTableIndex)
 {
 	var databaseName = "DataStorage";
-	var databaseTable = "DataTable"+j;
+	var databaseTable = "DataTable"+dataTableIndex;
 	var importedData={numUsed:{}};
 	var boundsData={};
 	var qualVars={};
@@ -80,6 +79,7 @@ function addQuant(datasetNames)
 				{
 					headerused=false;
 					dataTypes=curCursor.value;
+					console.log(dataTypes)
 					for(var j in dataTypes)
 					{
 						if(dataTypes[j]!='number')
@@ -142,7 +142,7 @@ function addQuant(datasetNames)
 						for(var j in datasetNames)
 						{
 							if(dataTypes[datasetNames[j]]!='number')
-							{
+							{console.log(datasetNames[j]); console.log(datasetNames)
 								importedData[datasetNames[j]][fipnum]={};
 								importedData[datasetNames[j]][fipnum][value[datasetNames[j]]]=1
 									
@@ -225,7 +225,6 @@ function addQuant(datasetNames)
 						
 					}
 				}
-					addQual(0)
 			}
 		}
 		cursorRequest.onerror = function (event) {
