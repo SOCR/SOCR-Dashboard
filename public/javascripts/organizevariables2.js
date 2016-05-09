@@ -34,20 +34,25 @@ var finalizeVariableImportPage = function ()
 	REDIPS.drag.init();
 }
 $('#startimport').click(function(){
-	sourceName=$('#sourcebox').val();
-	sourceDropDown.push({name:sourceName.split("_").join(' ').toProperCase(),value: sourceName, subitems:[]})
-	var quantVars=[];
-	$('.first-box div').each(function(){
-		quantVars.push($(this).text())
-	})
-	
-	if(quantVars.length>0)
-		addQuant(quantVars)
+
+	//loops through each file
+	for(var j=0;j<numFiles;j++)
+	{
+		sourceName=$('#fileTable'+fileIndex+' input').val();
+		sourceDropDown.push({name:sourceName.split("_").join(' ').split(".").join(' ').toProperCase(),value: sourceName, subitems:[]})
+		var quantVars=[];
+		$('#fileTable'+fileIndex+' .first-box').each(function(){
+			quantVars.push($(this).text())
+		})
+		
+		if(quantVars.length>0)
+			addQuant(quantVars, j)
+	}
 })
 function addQuant(datasetNames)
 {
 	var databaseName = "DataStorage";
-	var databaseTable = "DataTable";
+	var databaseTable = "DataTable"+j;
 	var importedData={numUsed:{}};
 	var boundsData={};
 	var qualVars={};
