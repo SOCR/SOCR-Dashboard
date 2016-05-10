@@ -20,7 +20,6 @@ Jan, 2010.
 /* drag objects (DIV inside table cells) */
 .redips-drag {
 	position: relative;
-	cursor: move;
 	margin: 2px auto;
 	z-index: 10;
 	background-color: #f0f0f0;
