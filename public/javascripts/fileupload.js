@@ -14,7 +14,12 @@ function handleFileSelect(fileList) {
 
 
   var toParse = [];
-  preParseHelper(0, toParse, fileList)
+  var newFileList = [];
+  for(var j =0;j<fileList.length;j++)
+  {
+	newFileList.push(fileList[j])
+  }
+  preParseHelper(0, toParse, newFileList)
 }
 function preParseHelper(j, toParse, fileList)
 {
