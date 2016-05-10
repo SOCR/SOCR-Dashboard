@@ -10,19 +10,28 @@ function organizeVariables(variablesList, fileIndex, curFileName)
 	
 	for (var j in variablesList)
 	{console.log(variablesList[j])
-		$('#fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'"><i class="fa fa-times-circle" aria-hidden="true"></i>  <div>'+variablesList[j]+'</div></div>');
+		$('#fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'">'+variablesList[j]+'</div>');
 	}
 	if(filesProcessed==numFiles)
 	{
 		finalizeVariableImportPage();
-		$('.first-box i').click(function(){$(this.parentNode).remove()})
 	}
 }
 
 var finalizeVariableImportPage = function ()
 {
 	filesProcessed = 0;
+	$('#redips-drag').append('<div class="addbox-divider"></div>');
+	$('#redips-drag').append('<table class="addbox " ><tr><td class= "redips-mark" >ADD</td></tr></table>');
+	$('#redips-drag').append('<table class="deletebox"><tr><td class="redips-trash">DELETE</td></tr></table>');
+	REDIPS.drag.trash.question='Are you sure you want to delete this variable?'
 	$('#sortvariablesbox').modal('show');
+	$('.addbox').on('click', function(){
+		$('.addbox-divider').before('<table><tr><td class="redips-mark"><input type="text" id="boxname'+numBoxes+'" placeholder="Enter Variable Name"></td></tr><tr><td class="newbox'+numBoxes+'"></td></tr></table>')
+		numBoxes++;
+		REDIPS.drag.init();
+	})
+	REDIPS.drag.init();
 }
 $('#startimport').click(function(){
 
@@ -32,7 +41,7 @@ $('#startimport').click(function(){
 		sourceName=$('#fileTable'+j+' input').val();
 		sourceDropDown.push({name:sourceName.split("_").join(' ').split(".").join(' ').toProperCase(),value: sourceName, subitems:[]})
 		var quantVars=[];
-		$('#fileTable'+j+' .first-box div div').each(function(){
+		$('#fileTable'+j+' .first-box div').each(function(){
 			quantVars.push($(this).text())
 		})
 		if(quantVars.length>0)
@@ -157,7 +166,7 @@ function addQuant(datasetNames, dataTableIndex, fileSourceName)
 			
 			//finalize import
 			else
-			{
+			{console.log('AAAAAAAABBBBBBBBB', importedData)
 				for(var j in importedData)
 				{
 					var dataname=j;
@@ -216,10 +225,6 @@ function addQuant(datasetNames, dataTableIndex, fileSourceName)
 						
 					}
 				}
-				$('#sortvariablesbox').modal('hide');
-				$('#redips-drag').empty();
-				numBoxes = 0;
-				return;
 			}
 		}
 		cursorRequest.onerror = function (event) {
