@@ -948,7 +948,7 @@
 		 * Directory containing the default worker scripts (z-worker.js, deflate.js, and inflate.js), relative to current base url.
 		 * E.g.: zip.workerScripts = './';
 		 */
-		workerScriptsPath : null,
+		workerScriptsPath : './javascripts/',
 		/**
 		 * Advanced option to control which scripts are loaded in the Web worker. If this option is specified, then workerScriptsPath must not be set.
 		 * workerScripts.deflater/workerScripts.inflater should be arrays of urls to scripts for deflater/inflater, respectively.
