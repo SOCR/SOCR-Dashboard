@@ -1392,7 +1392,8 @@ function endLoad()
 		$(this).css({"background-image":"-webkit-linear-gradient(top, #222222, #777777)"})
 	})
 	$('#opensortbox').click(function(){
-		$('#customdata').modal('hide'); 
+		$('#customdata').modal('hide');
+		handleFileSelect(document.getElementById("fileElem").files); 
 	})
 	sortDropdown();
 }
