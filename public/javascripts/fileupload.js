@@ -12,19 +12,32 @@ function handleFileSelect(fileList) {
 
   // var t0 = performance.now();
 
+
+  var toParse = [];
+  preParseHelper(0, toParse, fileList)
+}
+function preParseHelper(j, toParse, fileList)
+{
+	if(j>=fileList.length)
+	{
+		resumeFileSelect(fileList, toParse)
+	}
+	else
+	{
+		var extension=getExtension(fileList[j].name)
+		var functionString = "preparse"+extension.toUpperCase();
+		if (typeof window[functionString] === "function") {
+			window[functionString](fileList[j], toParse, fileList, function(){preParseHelper(j+1, toParse, fileList)});
+		}
+		else preParseHelper(j+1, toParse, fileList)
+	}
+}
+function resumeFileSelect(fileList, toParse) {
+
   //open and create database and table
   var indexedDBname = "DataStorage";
   var indexedDBtable = "DataTable";
   var curDBVersion = 2;
-  var toParse = [];
-  for(var j=0;j<fileList.length;j++)
-  {
-	var extension=getExtension(fileList[j].name)
-	var functionString = "preparse"+extension.toUpperCase();
-	if (typeof window[functionString] === "function") {
-		window[functionString](fileList[j], toParse);
-	}
-  }
   
   //check for indexedDB support
   if (!window.indexedDB) {

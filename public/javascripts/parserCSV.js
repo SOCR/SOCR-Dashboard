@@ -1,7 +1,8 @@
-function preparseCSV(file, array)
+function preparseCSV(file, array, fileList, callback)
 {
 	console.log('preParseCSV')
 	array.push(file);
+	callback();
 }
 
 function parseCSV(file, indexedDBtable, callback, indexedDBname)
