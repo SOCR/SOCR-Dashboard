@@ -1,43 +1,48 @@
 
-var headerused=false;
 var numBoxes=0;
 var sourceName;
-function organizeVariables(variablesList)
+var numFiles = 0;
+var filesProcessed = 0;
+function organizeVariables(variablesList, fileIndex, curFileName)
 {
-	$('#redips-drag').html('<table><tr><td class="redips-mark">Uncategorized</td></tr><tr><td class="first-box"></td></tr></table>');
+	filesProcessed++;
+	$('#redips-drag').append('<table id="fileTable'+fileIndex+'" ><tr><td class="redips-mark"><input type="text" value="'+curFileName+'"></td></tr><tr><td class="first-box"></td></tr></table>');
 	
 	for (var j in variablesList)
-	{
-		$('.first-box').append('<div class="redips-drag" id="dragvariable'+j+'">'+variablesList[j]+'</div>');
+	{console.log(variablesList[j])
+		$('#fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'"><i class="fa fa-times-circle" aria-hidden="true"></i>  <div>'+variablesList[j]+'</div></div>');
 	}
-	
-	$('#redips-drag').append('<div class="addbox-divider"></div>');
-	$('#redips-drag').append('<table class="addbox " ><tr><td class= "redips-mark" >ADD</td></tr></table>');
-	$('#redips-drag').append('<table class="deletebox"><tr><td class="redips-trash">DELETE</td></tr></table>');
-	REDIPS.drag.trash.question='Are you sure you want to delete this variable?'
+	if(filesProcessed==numFiles)
+	{
+		finalizeVariableImportPage();
+		$('.first-box i').click(function(){$(this.parentNode).remove()})
+	}
+}
+
+var finalizeVariableImportPage = function ()
+{
+	filesProcessed = 0;
 	$('#sortvariablesbox').modal('show');
-	$('.addbox').on('click', function(){
-		$('.addbox-divider').before('<table><tr><td class="redips-mark"><input type="text" id="boxname'+numBoxes+'" placeholder="Enter Variable Name"></td></tr><tr><td class="newbox'+numBoxes+'"></td></tr></table>')
-		numBoxes++;
-		REDIPS.drag.init();
-	})
-	REDIPS.drag.init();
 }
 $('#startimport').click(function(){
-	sourceName=$('#sourcebox').val();
-	sourceDropDown.push({name:sourceName.split("_").join(' ').toProperCase(),value: sourceName, subitems:[]})
-	var quantVars=[];
-	$('.first-box div').each(function(){
-		quantVars.push($(this).text())
-	})
-	
-	if(quantVars.length>0)
-		addQuant(quantVars)
+
+	//loops through each file
+	for(var j=0;j<numFiles;j++)
+	{
+		sourceName=$('#fileTable'+j+' input').val();
+		sourceDropDown.push({name:sourceName.split("_").join(' ').split(".").join(' ').toProperCase(),value: sourceName, subitems:[]})
+		var quantVars=[];
+		$('#fileTable'+j+' .first-box div div').each(function(){
+			quantVars.push($(this).text())
+		})
+		if(quantVars.length>0)
+			addQuant(quantVars, j, sourceName)
+	}
 })
-function addQuant(datasetNames)
+function addQuant(datasetNames, dataTableIndex, fileSourceName)
 {
 	var databaseName = "DataStorage";
-	var databaseTable = "DataTable";
+	var databaseTable = "DataTable"+dataTableIndex;
 	var importedData={numUsed:{}};
 	var boundsData={};
 	var qualVars={};
@@ -52,7 +57,7 @@ function addQuant(datasetNames)
 		console.log("Database error: " + event.target.errorCode);
 	};
 	request.onsuccess = function(event){
-		headerused=true;
+		var headerused=true;
 		var db = event.target.result;
 		var objStore = db.transaction(databaseTable).objectStore(databaseTable);
 		var cursorRequest = objStore.openCursor();
@@ -65,6 +70,7 @@ function addQuant(datasetNames)
 				{
 					headerused=false;
 					dataTypes=curCursor.value;
+					console.log(dataTypes)
 					for(var j in dataTypes)
 					{
 						if(dataTypes[j]!='number')
@@ -127,7 +133,7 @@ function addQuant(datasetNames)
 						for(var j in datasetNames)
 						{
 							if(dataTypes[datasetNames[j]]!='number')
-							{
+							{console.log(datasetNames[j]); console.log(datasetNames)
 								importedData[datasetNames[j]][fipnum]={};
 								importedData[datasetNames[j]][fipnum][value[datasetNames[j]]]=1
 									
@@ -157,7 +163,7 @@ function addQuant(datasetNames)
 					var dataname=j;
 					while(findVariable('super', dataname)>-1 || findVariable('var', dataname)>-1 )
 					{
-						dataname+='a'
+						dataname+='\0'
 					}
 					
 					//qualitative variable import
@@ -190,27 +196,30 @@ function addQuant(datasetNames)
 						superUsage.dataIn.push(true);
 						superUsage.dimensions.push({});
 						superUsage.dependancies.push(qualVars[j].names);
-						superUsage.sources.push(sourceName);
-						sourceDropDown[sourceDropDown.length-1].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'qual',value:dataname })
+						superUsage.sources.push(fileSourceName);
+						sourceDropDown[sourceDropDown.length-numFiles+dataTableIndex].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'qual',value:dataname })
 						addData('super', dataname, qualVars[j].data)
 						
 					}
 					
 					//quantitative variable import
 					else if(j!='numUsed')
-					{
+					{console.log(j)
 						addData('var', dataname, importedData[j])
 						varUsage.names.push(dataname)
 						varUsage.amounts.push(0);
 						varUsage.dataIn.push(true);
 						varUsage.dimensions.push({});
-						varUsage.sources.push(sourceName)
+						varUsage.sources.push(fileSourceName)
 						varUsage.bounds.push(boundsData[j]);
-						sourceDropDown[sourceDropDown.length-1].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'quant',value:dataname })
+						sourceDropDown[sourceDropDown.length-numFiles+dataTableIndex].subitems.push({name:j.split("_").join(' ').toProperCase() ,type:'quant',value:dataname })
 						
 					}
 				}
-					addQual(0)
+				$('#sortvariablesbox').modal('hide');
+				$('#redips-drag').empty();
+				numBoxes = 0;
+				return;
 			}
 		}
 		cursorRequest.onerror = function (event) {
@@ -226,6 +235,8 @@ function addQual(index)
 	if(index==numBoxes)
 	{
 		$('#sortvariablesbox').modal('hide');
+		$('#redips-drag').empty();
+		numBoxes = 0;
 		return;
 	}
 	
@@ -306,7 +317,7 @@ function addQual(index)
 				var dataname=variableName;
 				while(findVariable('super', dataname)>-1 || findVariable('var', dataname)>-1 )
 				{
-					dataname+='a'
+					dataname+='\0'
 				}
 				for(var j in importedData.data)
 				{
@@ -337,13 +348,11 @@ function addQual(index)
 		}
 	}
 }
-
-function getVariablesList()
+function getVariablesList(fileIndex, curFileName, nFiles)
 {
-
+	numFiles = nFiles;
 	var databaseName = "DataStorage";
-	var databaseTable = "DataTable";
-	
+	var databaseTable = "DataTable"+fileIndex;
 	var request = indexedDB.open(databaseName);
 	request.onerror = function(event) {
 		console.log("Database error: " + event.target.errorCode);
@@ -353,7 +362,7 @@ function getVariablesList()
 		var db = event.target.result;
 		var objStore = db.transaction(databaseTable).objectStore(databaseTable);
 		var cursorRequest = objStore.openCursor();
-		cursorRequest.onsuccess = function (event) {
+		cursorRequest.onsuccess = function(index, fileName){return function (event) {
 			var curCursor = event.target.result;
 			if (curCursor) 
 			{
@@ -366,11 +375,11 @@ function getVariablesList()
 					headerList.push(k)
 				}
 				
-				organizeVariables(headerList);
+				organizeVariables(headerList, index, fileName);
 			}
-		}
+		}}(fileIndex, curFileName)
 		cursorRequest.onerror = function (event) {
 		  console.log("Database error: " + event.target.errorCode);
 		}
 	}
-}
+} 

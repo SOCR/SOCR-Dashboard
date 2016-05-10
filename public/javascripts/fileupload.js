@@ -1,74 +1,110 @@
 
+//returns extension of a given filename
+var getExtension = function(fileName)
+{
+	var re = /(?:\.([^.]+))?$/;
+	var ext = re.exec(fileName)[1];
+	return ext;
+}
 
 // Uploading file and Parse 
-function handleFileSelect() {
+function handleFileSelect(fileList) {
 
   // var t0 = performance.now();
+
+
+  var toParse = [];
+  var newFileList = [];
+  for(var j =0;j<fileList.length;j++)
+  {
+	newFileList.push(fileList[j])
+  }
+  preParseHelper(0, toParse, newFileList)
+}
+function preParseHelper(j, toParse, fileList)
+{
+	if(j>=fileList.length)
+	{
+		resumeFileSelect(fileList, toParse)
+	}
+	else
+	{
+		var extension=getExtension(fileList[j].name)
+		var functionString = "preparse"+extension.toUpperCase();
+		if (typeof window[functionString] === "function") {
+			window[functionString](fileList[j], toParse, fileList, function(){preParseHelper(j+1, toParse, fileList)});
+		}
+		else preParseHelper(j+1, toParse, fileList)
+	}
+}
+function resumeFileSelect(fileList, toParse) {
 
   //open and create database and table
   var indexedDBname = "DataStorage";
   var indexedDBtable = "DataTable";
-
+  var curDBVersion = 2;
+  
+  //check for indexedDB support
   if (!window.indexedDB) {
       window.alert("Your browser doesn't support a stable version of IndexedDB. Parsing and Storage feature will not be available.");
-  } else {
-      var request = indexedDB.open(indexedDBname,2);
-      request.onerror = function(event) {
-        alert("Database error: " + event.target.errorCode);
-      };
-      request.onupgradeneeded = function(event) {
-        var db = event.target.result;
-        // Create another object store called "DataTable" with the autoIncrement flag set as true.    
-        var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
-      };  
+	  return;
+  } 
+  indexedDB.deleteDatabase(indexedDBname);
+  console.log(toParse);
+   
+  //initialize dataTables
+  var request = indexedDB.open(indexedDBname,3);
+  request.onerror = function(event) 
+  {
+	alert("Database error: " + event.target.errorCode);
   };
-
-  //open transaction and write data to indexedDB
-  var openRequest = indexedDB.open(indexedDBname);
-  openRequest.onerror = function(event) {
-    alert("Database error: " + event.target.errorCode);
-    };
-  openRequest.onsuccess = function(event){
-    
-    var fileInput = document.getElementById("fileElem");
-
-    var results = Papa.parse(fileInput.files[0], {
-      header: true,
-      dynamicTyping: true,
-      chunk: function(block){
-
-        var db = event.target.result;
-        var transaction = db.transaction([indexedDBtable], "readwrite");
-        var objStoreTable = transaction.objectStore(indexedDBtable);
-
+  request.onupgradeneeded = function(event) 
+  {
+	var db = event.target.result;
+	console.log('creating object store')
+	for(var j in toParse)
+	{
+		indexedDBtable = "DataTable"+j;
+		// Create another object store called "DataTable" with the autoIncrement flag set as true.    
+		var objStore = db.createObjectStore(indexedDBtable, { autoIncrement : true });
+	}
+  };  
+   
+  for(var j in toParse)
+  {
+	  indexedDBtable = "DataTable"+j;
+	  
+	  //open transaction for writing
+	  var openRequest = indexedDB.open(indexedDBname);
+	  
+	  //error opening transaction
+	  openRequest.onerror = function(event) {
+		alert("Database error: " + event.target.errorCode);
+		};
+		
+	  //begin parsing frame
+	  openRequest.onsuccess = function(k, indexedDBtableNew){ return function(event){
+	  
+		//open and clear correct table
+		var db = event.target.result;
+		var transaction = db.transaction([indexedDBtableNew], "readwrite");
+		var objStoreTable = transaction.objectStore(indexedDBtableNew);
 		objStoreTable.clear();
 		
-        // console.log(block);
-
-        //write header and datatype to db
-        var header = {};
-        for (i=0; i < block.meta.fields.length; i++){
-          header[block.meta.fields[i]] = typeof block.data[0][block.meta.fields[i]];
-        }
-        // console.log(header);
-        objStoreTable.add(header);
-
-        //write each data object to db
-        for (i=0; i < block.data.length; i++){
-          objStoreTable.add(block.data[i]);
-        }
-      },
-      complete: function() {
-        console.log("All done");
-		getVariablesList();
-        // getOneValue(indexedDBname, indexedDBtable, 8);
-
-        // var t1 = performance.now();
-        // console.log((t1-t0) + " ms" );
-
-      }
-    });
-  };
+	    //select appropriate parser
+		var extension=getExtension(toParse[k].name)
+		var functionString = "parse"+extension.toUpperCase();
+		var callback = function(curTable, curFileName, numFiles){
+			return function(){
+			getVariablesList(curTable, curFileName, numFiles);
+			}
+		}(k, toParse[k].name, toParse.length);
+		console.log(toParse[k].name)
+		if (typeof window[functionString] === "function") {
+			window[functionString](toParse[k], indexedDBtableNew, callback, indexedDBname);
+		}
+	  }}(j, indexedDBtable);
+  }
 };
 
 

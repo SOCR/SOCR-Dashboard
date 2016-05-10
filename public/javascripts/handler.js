@@ -1433,7 +1433,7 @@ function endLoad()
 	})
 	$('#opensortbox').click(function(){
 		$('#customdata').modal('hide');
-		handleFileSelect();
+		handleFileSelect(document.getElementById("fileElem").files); 
 	})
 	sortDropdown();
 }
