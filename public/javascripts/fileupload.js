@@ -21,7 +21,9 @@ function handleFileSelect(fileList) {
   {
 	var extension=getExtension(fileList[j].name)
 	var functionString = "preparse"+extension.toUpperCase();
-	window[functionString](fileList[j], toParse);
+	if (typeof window[functionString] === "function") {
+		window[functionString](fileList[j], toParse);
+	}
   }
   
   //check for indexedDB support
@@ -80,8 +82,9 @@ function handleFileSelect(fileList) {
 			}
 		}(k, toParse[k].name, toParse.length);
 		console.log(toParse[k].name)
-		window[functionString](toParse[k], indexedDBtableNew, callback, indexedDBname);
-		
+		if (typeof window[functionString] === "function") {
+			window[functionString](toParse[k], indexedDBtableNew, callback, indexedDBname);
+		}
 	  }}(j, indexedDBtable);
   }
 };
