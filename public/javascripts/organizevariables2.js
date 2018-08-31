@@ -10,6 +10,7 @@ function organizeVariables(variablesList, fileIndex, curFileName)
 	
 	for (var j in variablesList)
 	{console.log(variablesList[j])
+        $('#cohortname').append('<option>'+variablesList[j]+'</option>')
 		$('#fileTable'+fileIndex+' .first-box').append('<div class="redips-drag" id="dragfile'+fileIndex+'variable'+j+'"><i class="fa fa-times-circle" aria-hidden="true"></i>  <div>'+variablesList[j]+'</div></div>');
 	}
 	if(filesProcessed==numFiles)
@@ -23,22 +24,37 @@ var finalizeVariableImportPage = function ()
 {
 	filesProcessed = 0;
 	$('#sortvariablesbox').modal('show');
-}
-$('#startimport').click(function(){
+};
+startImport = function()
+{
 
-	//loops through each file
-	for(var j=0;j<numFiles;j++)
+    //loops through each file
+    for(var j=0;j<numFiles;j++)
+    {
+        sourceName=$('#fileTable'+j+' input').val();
+        sourceDropDown.push({name:sourceName.split("_").join(' ').split(".").join(' ').toProperCase(),value: sourceName, subitems:[]})
+        var quantVars=[];
+        $('#fileTable'+j+' .first-box div div').each(function(){
+            quantVars.push($(this).text())
+        })
+        if(quantVars.length>0)
+            addQuant(quantVars, j, sourceName)
+    }
+};
+$('#startimport').click(function()
+{
+	if(cohortName!=='')
 	{
-		sourceName=$('#fileTable'+j+' input').val();
-		sourceDropDown.push({name:sourceName.split("_").join(' ').split(".").join(' ').toProperCase(),value: sourceName, subitems:[]})
-		var quantVars=[];
-		$('#fileTable'+j+' .first-box div div').each(function(){
-			quantVars.push($(this).text())
-		})
-		if(quantVars.length>0)
-			addQuant(quantVars, j, sourceName)
+		startImport();
 	}
-})
+	else
+	{
+        $('#sortvariablesbox').modal('hide');
+        $("#cohortselector").modal('show');
+	}
+});
+
+
 function addQuant(datasetNames, dataTableIndex, fileSourceName)
 {
 	var databaseName = "DataStorage";
@@ -216,7 +232,6 @@ function addQuant(datasetNames, dataTableIndex, fileSourceName)
 						
 					}
 				}
-				$('#sortvariablesbox').modal('hide');
 				$('#redips-drag').empty();
 				numBoxes = 0;
 				return;
@@ -234,7 +249,6 @@ function addQual(index)
 {
 	if(index==numBoxes)
 	{
-		$('#sortvariablesbox').modal('hide');
 		$('#redips-drag').empty();
 		numBoxes = 0;
 		return;

@@ -435,8 +435,11 @@ block content
                     button.close(type="button" ,data-dismiss="modal", aria-hidden="true")&times;
                     h4.modal-title Cohort Variable Properties
                 .modal-body
-                    div Cohort variable name:            
-                        input#cohortname(type="text")
+                    div Cohort variable name:
+                        if(mode!="free")
+                            input#cohortname(type="text")
+                        else
+                            select#cohortname
                     div Minimum cohort variable value:      
                         input#cohortmin(type="text")
                     div Maximum cohort variable value:      
