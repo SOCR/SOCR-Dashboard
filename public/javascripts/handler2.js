@@ -28,7 +28,6 @@ $(document).ready(function(){
     });
 	$("text").css({"color":"white"})
     gridster = $(".gridster ul").gridster().data('gridster');
-	$("#cohortselector").modal('show');
 })
 
 
@@ -1039,6 +1038,8 @@ $('#startdashboard').click(function(){
 	{
 		endLoad()
 		$('#cohortselector').modal('hide')
+
+        startImport();
 	}
 })
 function endLoad()
@@ -1046,8 +1047,9 @@ function endLoad()
 	minCohort=$('#cohortmin').val()
 	maxCohort=$('#cohortmax').val()
 	numCohorts=$('#numbins').val()
-	cohortName=$('#cohortname').val()
-	cohortWidth=maxCohort-minCohort+1;
+	cohortName=$('#cohortname option:selected').text();
+
+    cohortWidth=maxCohort-minCohort+1;
 	cohortWidth/=numCohorts;
     for(var j=0;j<numCohorts;j++)
 	{
@@ -1390,10 +1392,11 @@ function endLoad()
 			$(this).css({"background-image":"-webkit-linear-gradient(top, #757c82, #757882)"})
 		})
 		$(this).css({"background-image":"-webkit-linear-gradient(top, #222222, #777777)"})
-	})
-	$('#opensortbox').click(function(){
-		$('#customdata').modal('hide');
-		handleFileSelect(document.getElementById("fileElem").files); 
-	})
+	});
 	sortDropdown();
 }
+
+$('#opensortbox').click(function(){
+    $('#customdata').modal('hide');
+    handleFileSelect(document.getElementById("fileElem").files);
+})
